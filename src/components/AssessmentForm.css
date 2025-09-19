@@ -1,0 +1,25 @@
+.assessment-form {
+  background: white;
+  padding: 20px;
+  border-radius: 5px;
+}
+.form-section {
+  border: 1px solid #eee;
+  border-radius: 4px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+.form-question {
+  margin-bottom: 15px;
+}
+.form-question label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+.form-question input[type="text"], .form-question textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}

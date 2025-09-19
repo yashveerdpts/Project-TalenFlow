@@ -1,0 +1,60 @@
+/* src/pages/AssessmentBuilderPage.css */
+.builder-page {
+  display: flex;
+  height: calc(100vh - 100px);
+  gap: 20px;
+  padding: 20px;
+}
+
+.builder-panel, .preview-panel {
+  flex: 1;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow-y: auto;
+}
+
+.preview-panel {
+  background-color: #f9f9f9;
+}
+
+.assessment-title-input, .section-title-input {
+  font-size: 1.5rem;
+  font-weight: bold;
+  border: none;
+  border-bottom: 2px solid #eee;
+  width: 100%;
+  margin-bottom: 20px;
+  padding: 5px;
+}
+
+.section-builder {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 15px;
+  margin-bottom: 20px;
+}
+
+.question-editor {
+  border: 1px dashed #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+}
+
+.question-editor textarea, .question-editor select {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+.delete-btn {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}

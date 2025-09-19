@@ -1,0 +1,64 @@
+/* src/pages/CandidateDetailsPage.css */
+.details-page {
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 20px;
+    font-family: sans-serif;
+}
+
+.profile-header {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+}
+
+.stage-badge {
+    display: inline-block;
+    padding: 5px 10px;
+    background-color: #e0e7ff;
+    color: #4338ca;
+    border-radius: 12px;
+    font-size: 0.9em;
+}
+
+.details-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+}
+
+.timeline-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.timeline-section li {
+    padding: 15px 0;
+    border-bottom: 1px dashed #ddd;
+    display: flex;
+    justify-content: space-between;
+}
+
+.notes-section textarea {
+    width: 100%;
+    height: 120px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.rendered-note {
+    padding: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #eee;
+    border-radius: 5px;
+    min-height: 50px;
+}
+
+.mention {
+    background-color: #dbeafe;
+    color: #1e40af;
+    padding: 2px 4px;
+    border-radius: 4px;
+}

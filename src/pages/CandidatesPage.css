@@ -1,0 +1,116 @@
+/* src/pages/CandidatesPage.css */
+.candidates-page {
+  padding: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 120px); 
+}
+
+.controls {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+  align-items: center;
+}
+
+.controls input, .controls select, .controls button {
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+/* List View Styles */
+.list-container {
+  height: 100%;
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.candidate-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  border-bottom: 1px solid #eee;
+  box-sizing: border-box;
+}
+
+.candidate-link {
+    text-decoration: none;
+    color: #333;
+}
+.candidate-link p {
+    margin: 5px 0 0;
+    font-size: 0.9em;
+    color: #555;
+}
+
+.stage-badge {
+    display: inline-block;
+    padding: 5px 10px;
+    background-color: #e0e7ff;
+    color: #4338ca;
+    border-radius: 12px;
+    font-size: 0.9em;
+}
+
+
+/* Kanban View Styles */
+.kanban-board {
+  display: flex;
+  gap: 15px;
+  overflow-x: auto;
+  flex-grow: 1;
+  padding-bottom: 15px;
+}
+
+.kanban-column {
+  flex: 1 0 300px;
+  max-width: 320px;
+  display: flex;
+  flex-direction: column;
+  background-color: #f4f5f7;
+  border-radius: 8px;
+}
+
+.kanban-column h2 {
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 15px;
+  margin: 0;
+  border-bottom: 2px solid #ddd;
+}
+
+.card-list {
+    padding: 10px;
+    flex-grow: 1;
+    overflow-y: auto;
+    min-height: 100px;
+}
+
+.kanban-column.dragging-over {
+    background-color: #e6f7ff;
+}
+
+.kanban-card {
+  background-color: white;
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+}
+
+.kanban-card p {
+    margin: 5px 0 0;
+    font-size: 0.9em;
+    color: #555;
+}
+
+.kanban-card.is-dragging {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    transform: rotate(3deg);
+}
