@@ -1,6 +1,6 @@
 // src/pages/CandidatesPage.jsx
 import React, { useContext, useState, useMemo } from 'react';
-import { Link } from 'react-router-dom'; // Import Link for navigation
+import { Link } from 'react-router-dom'; // Link is already here!
 import { CandidatesContext } from '../context/CandidatesContext';
 import { AutoSizer, List } from 'react-virtualized';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
@@ -59,7 +59,6 @@ const CandidatesPage = () => {
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                 />
-                {/* Stage filter is only shown in list view for better UX */}
                 {view === 'list' && (
                     <select value={stageFilter} onChange={(e) => setStageFilter(e.target.value)}>
                         <option value="">All Stages</option>
@@ -99,22 +98,25 @@ const CandidatesPage = () => {
                                     >
                                         <h2>{stage} ({filteredCandidates.filter(c => c.stage === stage).length})</h2>
                                         <div className="card-list">
-                                            {/* *** IMPORTANT FIX *** */}
-                                            {/* Now using 'filteredCandidates' so search works in Kanban view */}
                                             {filteredCandidates
                                                 .filter(c => c.stage === stage)
                                                 .map((candidate, index) => (
                                                     <Draggable key={candidate.id} draggableId={candidate.id.toString()} index={index}>
                                                         {(provided, snapshot) => (
-                                                            <div
-                                                                className={`kanban-card ${snapshot.isDragging ? 'is-dragging' : ''}`}
-                                                                ref={provided.innerRef}
-                                                                {...provided.draggableProps}
-                                                                {...provided.dragHandleProps}
-                                                            >
-                                                                <strong>{candidate.name}</strong>
-                                                                <p>{candidate.email}</p>
-                                                            </div>
+                                                            // *** MODIFICATION START ***
+                                                            // We wrap the draggable div with a Link component
+                                                            <Link to={`/candidates/${candidate.id}`} className="kanban-card-link">
+                                                                <div
+                                                                    className={`kanban-card ${snapshot.isDragging ? 'is-dragging' : ''}`}
+                                                                    ref={provided.innerRef}
+                                                                    {...provided.draggableProps}
+                                                                    {...provided.dragHandleProps}
+                                                                >
+                                                                    <strong>{candidate.name}</strong>
+                                                                    <p>{candidate.email}</p>
+                                                                </div>
+                                                            </Link>
+                                                            // *** MODIFICATION END ***
                                                         )}
                                                     </Draggable>
                                                 ))}
