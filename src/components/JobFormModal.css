@@ -1,0 +1,100 @@
+/* --- Modal Overlay: The blurred background --- */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(30, 30, 40, 0.6);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 0;
+  animation: fadeIn 0.3s forwards;
+}
+
+/* --- Modal Content: The form "card" --- */
+.modal-content {
+  background: var(--surface-color, #ffffff);
+  padding: 2rem 2.5rem;
+  border-radius: var(--border-radius, 12px);
+  box-shadow: 0 10px 40px var(--shadow-heavy, rgba(0, 0, 0, 0.2));
+  width: 100%;
+  max-width: 500px;
+  transform: scale(0.95);
+  animation: popIn 0.3s forwards;
+}
+
+.modal-content h2 {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--primary-color, #6a5af9);
+  text-align: center;
+}
+
+/* --- Form Styling --- */
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: var(--text-color, #333);
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: 'Poppins', sans-serif;
+  transition: all 0.2s ease-in-out;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--primary-color, #6a5af9);
+  box-shadow: 0 0 0 3px rgba(106, 90, 249, 0.2);
+}
+
+.form-group small {
+  display: block;
+  margin-top: 0.3rem;
+  font-size: 0.8rem;
+  color: var(--text-light, #555);
+}
+
+/* --- Form Actions: Buttons --- */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+/* --- Error Styling --- */
+.error-message {
+  color: #e53e3e;
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+}
+
+.input-error {
+  border-color: #e53e3e !important;
+}
+
+/* --- Animations --- */
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+
+@keyframes popIn {
+  to { opacity: 1; transform: scale(1); }
+}

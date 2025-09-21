@@ -1,18 +1,20 @@
-// src/pages/AssessmentBuilderPage.jsx
-import React, { useEffect, useReducer, useCallback } from 'react';
+import React, { useEffect, useReducer, useCallback, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../dexieDB';
-import AssessmentForm from '../components/AssessmentForm'; // We will create this
+import AssessmentForm from '../components/AssessmentForm';
+import QuestionEditor from '../components/QuestionEditor'; // The new editor component
 import './AssessmentBuilderPage.css';
 import { nanoid } from 'nanoid';
 
-// Reducer for managing complex assessment state
+// --- Reducer for managing complex assessment state ---
 const assessmentReducer = (state, action) => {
-  const newState = JSON.parse(JSON.stringify(state)); // Deep copy for immutability
+  if (!state && action.type !== 'LOAD_ASSESSMENT') return state;
+  const newState = JSON.parse(JSON.stringify(state)); // Deep copy
+
   switch (action.type) {
     case 'LOAD_ASSESSMENT':
-      return action.payload;
+      return action.payload || { title: 'New Assessment', sections: [] };
     case 'UPDATE_TITLE':
       newState.title = action.payload;
       return newState;
@@ -28,13 +30,15 @@ const assessmentReducer = (state, action) => {
         text: 'New Question',
         type: 'short-text',
         options: [],
-        validation: { required: false },
+        validation: { required: false, min: null, max: null, maxLength: null },
+        conditional: { dependsOn: null, showIfValue: '' },
       });
       return newState;
-    case 'UPDATE_QUESTION':
-      const { sectionIndex, questionIndex, field, value } = action.payload;
-      newState.sections[sectionIndex].questions[questionIndex][field] = value;
+    case 'UPDATE_QUESTION_FIELD': {
+      const { sIdx, qIdx, field, value } = action.payload;
+      newState.sections[sIdx].questions[qIdx][field] = value;
       return newState;
+    }
     case 'DELETE_QUESTION':
       newState.sections[action.payload.sectionIndex].questions.splice(action.payload.questionIndex, 1);
       return newState;
@@ -45,44 +49,46 @@ const assessmentReducer = (state, action) => {
 
 const AssessmentBuilderPage = () => {
   const { jobId } = useParams();
-  const [assessmentState, dispatch] = useReducer(assessmentReducer, { title: '', sections: [] });
+  const [assessmentId, setAssessmentId] = useState(null);
+  const [assessmentState, dispatch] = useReducer(assessmentReducer, null);
+  const [responses, setResponses] = useState({});
 
-  // Load existing assessment or create a new one
-  const existingAssessment = useLiveQuery(() => db.assessments.get({ jobId: Number(jobId) }), [jobId]);
+  const existingAssessment = useLiveQuery(() => db.assessments.where({ jobId: Number(jobId) }).first(), [jobId]);
 
   useEffect(() => {
     if (existingAssessment) {
       dispatch({ type: 'LOAD_ASSESSMENT', payload: existingAssessment.structure });
+      setAssessmentId(existingAssessment.id);
     } else {
-      dispatch({ type: 'LOAD_ASSESSMENT', payload: { id: nanoid(), title: 'New Assessment', sections: [] } });
+      dispatch({ type: 'LOAD_ASSESSMENT', payload: { title: 'New Assessment', sections: [{ id: nanoid(), title: 'First Section', questions: [] }] } });
+      setAssessmentId(null);
     }
   }, [existingAssessment]);
-  
-  // Debounced save to Dexie
+
   const saveAssessment = useCallback(async (state) => {
-    await db.assessments.put({
-      jobId: Number(jobId),
-      title: state.title,
-      structure: state,
-    });
-    console.log("Assessment saved!");
-  }, [jobId]);
+    if (!state) return;
+    try {
+      const payload = { jobId: Number(jobId), title: state.title, structure: state };
+      if (assessmentId) {
+        await db.assessments.update(assessmentId, payload);
+      } else {
+        const newId = await db.assessments.add(payload);
+        setAssessmentId(newId);
+      }
+      console.log("Assessment saved!");
+    } catch (error) {
+      console.error("Failed to save assessment:", error);
+    }
+  }, [jobId, assessmentId]);
 
   useEffect(() => {
-    if (assessmentState.title) { // Avoid saving initial empty state
-        const handler = setTimeout(() => {
-            saveAssessment(assessmentState);
-        }, 1500); // Save 1.5s after last change
-        return () => clearTimeout(handler);
+    if (assessmentState) {
+      const handler = setTimeout(() => saveAssessment(assessmentState), 1500);
+      return () => clearTimeout(handler);
     }
   }, [assessmentState, saveAssessment]);
 
-
-  const handleQuestionChange = (sectionIndex, questionIndex, field, value) => {
-    dispatch({ type: 'UPDATE_QUESTION', payload: { sectionIndex, questionIndex, field, value } });
-  };
-  
-  if (!jobId) return <div>Loading...</div>
+  if (!assessmentState) return <div>Loading Assessment...</div>;
 
   return (
     <div className="builder-page">
@@ -99,33 +105,32 @@ const AssessmentBuilderPage = () => {
             <input
               className="section-title-input"
               value={section.title}
-              onChange={(e) => dispatch({type: 'UPDATE_SECTION_TITLE', payload: {sectionIndex: sIdx, title: e.target.value}})}
+              onChange={(e) => dispatch({ type: 'UPDATE_SECTION_TITLE', payload: { sectionIndex: sIdx, title: e.target.value } })}
             />
             {section.questions.map((q, qIdx) => (
-              <div key={q.id} className="question-editor">
-                <textarea
-                  placeholder="Question Text"
-                  value={q.text}
-                  onChange={(e) => handleQuestionChange(sIdx, qIdx, 'text', e.target.value)}
-                />
-                <select value={q.type} onChange={(e) => handleQuestionChange(sIdx, qIdx, 'type', e.target.value)}>
-                  <option value="short-text">Short Text</option>
-                  <option value="long-text">Long Text</option>
-                  <option value="single-choice">Single Choice</option>
-                  <option value="multi-choice">Multi-Choice</option>
-                </select>
-                 <button onClick={() => dispatch({type: 'DELETE_QUESTION', payload: {sectionIndex: sIdx, questionIndex: qIdx}})} className="delete-btn">Delete</button>
-                {/* Add more fields here for options, validation, conditional logic etc. */}
-              </div>
+              <QuestionEditor
+                key={q.id}
+                question={q}
+                sectionIndex={sIdx}
+                questionIndex={qIdx}
+                allQuestions={assessmentState.sections.flatMap(s => s.questions)}
+                dispatch={dispatch}
+              />
             ))}
-            <button onClick={() => dispatch({ type: 'ADD_QUESTION', payload: { sectionIndex: sIdx } })}>+ Add Question</button>
+            <button onClick={() => dispatch({ type: 'ADD_QUESTION', payload: { sectionIndex: sIdx } })} className="btn btn-secondary">
+              + Add Question
+            </button>
           </div>
         ))}
-        <button onClick={() => dispatch({ type: 'ADD_SECTION' })}>+ Add Section</button>
+        <button onClick={() => dispatch({ type: 'ADD_SECTION' })} className="btn btn-primary">+ Add Section</button>
       </div>
       <div className="preview-panel">
         <h2>Live Preview</h2>
-        <AssessmentForm assessmentStructure={assessmentState} />
+        <AssessmentForm
+          assessmentStructure={assessmentState}
+          onResponseChange={setResponses} // Persist responses locally
+          responses={responses}
+        />
       </div>
     </div>
   );

@@ -1,0 +1,82 @@
+/* --- ================================== --- */
+/* ---      Assessments List Page Styles    --- */
+/* --- ================================== --- */
+
+.assessments-page-container {
+  padding: 2rem;
+}
+
+.assessments-content {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* --- Header --- */
+.assessments-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.assessments-header h1 {
+  margin: 0;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+/* --- Assessments List & Cards --- */
+.assessments-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.assessment-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  background-color: var(--surface-color);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 15px var(--shadow-color);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.assessment-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px var(--shadow-heavy);
+}
+
+.assessment-card-main {
+  display: flex;
+  flex-direction: column;
+}
+
+.assessment-card-main strong {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.assessment-card-main small {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  margin-top: 0.25rem;
+}
+
+.assessment-card-actions {
+  display: flex;
+  align-items: center;
+}
+
+/* --- Empty State Message --- */
+.no-assessments-message {
+  text-align: center;
+  padding: 4rem;
+  background-color: var(--surface-color);
+  border-radius: var(--border-radius);
+  color: var(--text-light);
+  border: 1px solid var(--border-color);
+}

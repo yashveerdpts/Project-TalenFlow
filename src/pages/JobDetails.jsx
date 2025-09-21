@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { db } from "../dexieDB";
+import "./JobDetailsPage.css"; // Import the new CSS file
 
 export default function JobDetails() {
   const { jobId } = useParams();
@@ -11,7 +11,13 @@ export default function JobDetails() {
   useEffect(() => {
     async function getJobDetails() {
       try {
-        const jobFromDb = await db.jobs.get(parseInt(jobId, 10));
+        // Dexie keys are numbers, so we parse the ID from the URL
+        const id = parseInt(jobId, 10);
+        if (isNaN(id)) {
+          setJob(null);
+          return;
+        }
+        const jobFromDb = await db.jobs.get(id);
         setJob(jobFromDb);
       } catch (error) {
         console.error("Failed to fetch job details:", error);
@@ -22,31 +28,30 @@ export default function JobDetails() {
     getJobDetails();
   }, [jobId]);
 
-  if (loading) return <div style={{ padding: 20 }}>Loading...</div>;
-  if (!job) return <div style={{ padding: 20 }}>Job not found.</div>;
+  if (loading) {
+    return <div className="message-container">Loading job details...</div>;
+  }
+  
+  if (!job) {
+    return <div className="message-container">Job not found.</div>;
+  }
 
   return (
-    <div style={{ padding: 20 }}>
-      <h1>{job.title}</h1>
-      <p><strong>Slug:</strong> {job.slug}</p>
-      <p><strong>Status:</strong> <span style={{ textTransform: 'capitalize' }}>{job.status}</span></p>
-      <p><strong>Internal Order ID:</strong> {job.order}</p>
+    <div className="job-details-page">
+      {/* --- Header Card --- */}
+      <div className="job-details-card job-header">
+        <h1>{job.title}</h1>
+        <div className="job-meta-details">
+          <p><strong>Slug:</strong> {job.slug}</p>
+          <p><strong>Status:</strong> <span className={`status-badge status-${job.status}`}>{job.status}</span></p>
+        </div>
+      </div>
 
-      <hr style={{ margin: '2rem 0' }} />
-      <div>
+      {/* --- Hiring Tools Card --- */}
+      <div className="job-details-card hiring-tools-card">
         <h2>Hiring Tools</h2>
-        <Link
-          to={`/jobs/${jobId}/assessment`}
-          style={{
-            display: 'inline-block',
-            padding: '10px 15px',
-            backgroundColor: '#007bff',
-            color: 'white',
-            textDecoration: 'none',
-            borderRadius: '5px',
-            fontWeight: 'bold'
-          }}
-        >
+        <p>Manage assessments and other tools for this role.</p>
+        <Link to={`/jobs/${jobId}/assessment`} className="btn btn-primary">
           Go to Assessment Builder
         </Link>
       </div>

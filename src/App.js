@@ -1,39 +1,44 @@
-import React from "react";
+
+import React, { useEffect } from 'react';
+import { runSeed } from './seedDB';
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { ThemeProvider } from './context/ThemeContext';
 
 // Pages
+import DashboardPage from './pages/DashboardPage';
 import JobsPage from "./pages/JobsPage";
 import JobDetailsPage from "./pages/JobDetails"; // Corrected the import name for clarity
 import CandidatesPage from './pages/CandidatePage';
 import CandidateDetailsPage from './pages/CandidateDetailsPage';
 import AssessmentBuilderPage from './pages/AssessmentBuilderPage';
-
+import Navbar from "./components/Navbar";
 // Context Providers
 import { JobsProvider } from './context/JobsContext';
 import { CandidatesProvider } from './context/CandidatesContext';
-
-// Styles
+import AssessmentPage from "./pages/AssessmentPage";
 import "react-toastify/dist/ReactToastify.css";
 import './App.css'; // Optional: for better nav styling
 
 function App() {
+
+   useEffect(() => {
+    runSeed();
+  }, []);
+
   return (
+    <ThemeProvider>
     <JobsProvider>
       <CandidatesProvider>
         <Router>
-          <nav style={{ padding: "1rem", background: "#f0f0f0", marginBottom: "1.5rem", borderBottom: "1px solid #ddd" }}>
-            <Link to="/jobs" style={{ marginRight: "1rem", textDecoration: "none", color: "#333", fontWeight: "bold" }}>Jobs</Link>
-            <Link to="/candidates" style={{ textDecoration: "none", color: "#333", fontWeight: "bold" }}>Candidates</Link>
-          
-
-          </nav>
+          <Navbar />
           
           <main style={{ padding: "0 1rem" }}>
             <Routes>
-              {/* Job Routes */}
+              {/* Job Routes */} 
+               <Route path="/" element={<DashboardPage />} /> 
               <Route path="/jobs" element={<JobsPage />} />
-              <Route path="/jobs/:jobId" element={<JobDetailsPage />} />
-
+              <Route path="/jobs/:jobId" element={<JobDetailsPage />} /> 
+              <Route path="/assessments" element={<AssessmentPage />} />
               {/* Candidate Routes */}
               <Route path="/candidates" element={<CandidatesPage />} />
               <Route path="/candidates/:id" element={<CandidateDetailsPage />} />
@@ -48,6 +53,7 @@ function App() {
         </Router>
       </CandidatesProvider>
     </JobsProvider>
+    </ThemeProvider>
   );
 }
 export default App;

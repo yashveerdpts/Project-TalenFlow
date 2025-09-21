@@ -5,11 +5,7 @@ import { useJobsState, useJobsDispatch, updateJobStatus, fetchJobs, reorderJobs 
 import JobFormModal from "../components/JobFormModal";
 import "./JobsPage.css";
 
-const ThemeIcon = ({ isDarkMode }) => (
-  <span style={{ fontSize: '24px', verticalAlign: 'middle' }}>
-    {isDarkMode ? '🌙' : '☀️'}
-  </span>
-);
+// REMOVED: The ThemeIcon component is no longer needed.
 
 function JobsPage() {
   const navigate = useNavigate();
@@ -18,7 +14,7 @@ function JobsPage() {
   const { list, filters, meta, loading } = state;
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [theme, setTheme] = useState('light');
+  // REMOVED: All theme state and functions are gone.
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -27,28 +23,18 @@ function JobsPage() {
     return () => clearTimeout(handler);
   }, [dispatch, filters, meta.page]);
 
-  useEffect(() => {
-    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-    setTheme(prefersDark ? 'dark' : 'light');
-  }, []);
-
-  const toggleTheme = () => {
-    setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
-  };
-
   const onDragEnd = (result) => {
     if (!result.destination) return;
     reorderJobs(dispatch, list, result.source.index, result.destination.index);
   };
 
   return (
-    <div className={`jobs-page-container ${theme}-theme`}>
+    // The theme class has been removed from this div
+    <div className="jobs-page-container">
       <div className="jobs-content">
         <header className="jobs-header">
           <h1>Jobs</h1>
-          <button onClick={toggleTheme} className="theme-toggle-btn">
-            <ThemeIcon isDarkMode={theme === 'dark'} />
-          </button>
+          {/* REMOVED: The theme toggle button is gone. */}
         </header>
 
         <div className="jobs-filters">
