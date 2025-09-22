@@ -41,8 +41,9 @@ export default function JobDetails() {
       {/* --- Header Card --- */}
       <div className="job-details-card job-header">
         <h1>{job.title}</h1>
-        <div className="job-meta-details">
-          <p><strong>Slug:</strong> {job.slug}</p>
+        <div className="job-meta-details"> 
+          <p><strong>Slug:</strong> {job.slug}</p> 
+          <p><strong>Tags:</strong> {job.tags.join(", ")}</p>
           <p><strong>Status:</strong> <span className={`status-badge status-${job.status}`}>{job.status}</span></p>
         </div>
       </div>

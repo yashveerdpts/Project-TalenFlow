@@ -6,7 +6,7 @@ const JOB_COUNT = 25;
 const CANDIDATE_COUNT = 1000;
 const ASSESSMENT_COUNT = 3;
 
-const STAGES = ["Applied", "Screening", "Interview", "Offer", "Hired"];
+const STAGES = ["Applied", "Screening", "Interview", "Offer", "Hired" ,"Rejected"];
 
 // --- Helper to get a random item from an array ---
 const getRandom = (arr) => arr[Math.floor(Math.random() * arr.length)];
@@ -34,20 +34,24 @@ const seedJobs = async () => {
 const seedCandidates = async (createdJobs) => {
   const candidates = [];
   const jobIds = createdJobs.map(j => j.id);
-
   for (let i = 0; i < CANDIDATE_COUNT; i++) {
+    const stage = getRandom(STAGES);
     const firstName = faker.person.firstName();
     const lastName = faker.person.lastName();
     candidates.push({
       name: `${firstName} ${lastName}`,
       email: faker.internet.email({ firstName, lastName }),
-      stage: getRandom(STAGES),
+      stage: stage,
       jobId: getRandom(jobIds),
+      // Ensure timeline and notes arrays always exist
+      timeline: [{ stage: stage, date: faker.date.past().toISOString() }],
+      notes: [], 
     });
   }
   await db.candidates.bulkAdd(candidates);
   console.log(`${CANDIDATE_COUNT} candidates seeded.`);
 };
+
 
 // --- 3. Seed Assessments (with English Questions) ---
 const generateQuestion = (type) => {

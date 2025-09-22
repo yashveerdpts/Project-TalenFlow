@@ -205,7 +205,7 @@
 .status-badge.status-interview { background-color: rgba(168, 85, 247, 0.1); color: #9333ea; }
 .status-badge.status-offer { background-color: rgba(22, 163, 74, 0.1); color: #15803d; }
 .status-badge.status-hired { background-color: rgba(22, 163, 74, 0.2); color: #15803d; font-weight: bold; }
-
+.status-badge.status-rejected { background-color: rgba(239, 68, 68, 0.1); color: #ef4444;}
 /* General message container for loading/error states */
 .message-container {
   text-align: center;

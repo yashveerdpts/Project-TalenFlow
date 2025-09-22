@@ -10,7 +10,7 @@ const initialState = {
   list: [],
   meta: { total: 0, page: 1, pageSize: PAGE_SIZE },
   loading: false,
-  filters: { search: "", status: "" },
+  filters: { search: "", status: "" ,tags: "" },
 };
 
 // --- REDUCER ---
@@ -94,6 +94,14 @@ export async function fetchJobs(dispatch, { filters, page }) {
       job.title.toLowerCase().includes(searchLower)
     );
   }
+   if (filters.tags) {
+    const tagLower = filters.tags.toLowerCase();
+    collection = collection.filter(job => 
+      // Check if the job's tags array contains the searched tag
+      Array.isArray(job.tags) && job.tags.some(tag => tag.toLowerCase().includes(tagLower))
+    );
+  }
+
 
   try {
     const total = await collection.count();

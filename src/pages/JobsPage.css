@@ -276,4 +276,15 @@
 .dark-theme .filter-select option {
   background: var(--surface-color);
   color: var(--text-color);
+} 
+
+/* Add this to your JobsPage.css */
+
+.jobs-filters {
+  display: grid;
+  /* Adjust grid to accommodate the new input */
+  grid-template-columns: 1fr 1fr auto auto; 
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+  align-items: center;
 }

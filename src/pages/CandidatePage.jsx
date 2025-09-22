@@ -3,7 +3,9 @@ import { Link } from 'react-router-dom';
 import { CandidatesContext } from '../context/CandidatesContext';
 import { AutoSizer, List } from 'react-virtualized';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import ProfileAvatar from '../components/ProfileAvatar';
+import ProfileAvatar from '../components/ProfileAvatar'; 
+import AddNoteModal from '../components/AddNoteModal'; 
+
 import 'react-virtualized/styles.css';
 import './CandidatesPage.css';
 
@@ -13,10 +15,11 @@ const MailIcon = () => (
   </svg>
 );
 
-const STAGES = ["Applied", "Screening", "Interview", "Offer", "Hired"];
+const STAGES = ["Applied", "Screening", "Interview", "Offer", "Hired", "Rejected"];
 
 const CandidatesPage = () => {
   const { candidates, loading, error, updateCandidateStage } = useContext(CandidatesContext);
+   const [noteModalState, setNoteModalState] = useState({ isOpen: false, candidateId: null, newStage: null });
   const [search, setSearch] = useState('');
   const [stageFilter, setStageFilter] = useState('');
   const [view, setView] = useState('list');
@@ -25,7 +28,6 @@ const CandidatesPage = () => {
     return candidates.filter(c => {
         const searchLower = search.toLowerCase();
         const matchesSearch = c.name.toLowerCase().includes(searchLower) || c.email.toLowerCase().includes(searchLower);
-        // Only apply the stage filter when in list view
         const matchesFilter = view === 'list' && stageFilter ? c.stage === stageFilter : true;
         return matchesSearch && matchesFilter;
     });
@@ -33,10 +35,23 @@ const CandidatesPage = () => {
 
   const handleOnDragEnd = (result) => {
     const { destination, source, draggableId } = result;
-    if (!destination || (destination.droppableId === source.droppableId && destination.index === source.index)) {
-        return;
+    if (!destination || (destination.droppableId === source.droppableId)) {
+      return;
     }
-    updateCandidateStage(draggableId, destination.droppableId);
+    // Open the modal to ask for a note
+    setNoteModalState({
+      isOpen: true,
+      candidateId: draggableId,
+      newStage: destination.droppableId,
+    });
+  };
+
+  const handleSaveNoteAndMove = (note) => {
+    const { candidateId, newStage } = noteModalState;
+    if (candidateId && newStage) {
+      updateCandidateStage(candidateId, newStage, note);
+    }
+    setNoteModalState({ isOpen: false, candidateId: null, newStage: null });
   };
 
   const rowRenderer = ({ key, index, style }) => {
@@ -58,81 +73,88 @@ const CandidatesPage = () => {
   if (loading) return <div className="message-container">Loading candidates...</div>;
   if (error) return <div className="message-container">Error: {error}</div>;
 
+  const candidateForModal = candidates.find(c => c.id === Number(noteModalState.candidateId));
+
   return (
-    <div className="candidates-page">
-      <h1>Candidates</h1>
-      <div className="controls">
-        <input
-          type="text"
-          placeholder="Search by name or email..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="filter-input"
-        />
-        {view === 'list' && (
-          <select value={stageFilter} onChange={(e) => setStageFilter(e.target.value)} className="filter-select">
-            <option value="">All Stages</option>
-            {STAGES.map(s => <option key={s} value={s}>{s}</option>)}
-          </select>
-        )}
-        <button onClick={() => setView(view === 'list' ? 'kanban' : 'list')} className="btn btn-primary">
-          Switch to {view === 'list' ? 'Kanban' : 'List'} View
-        </button>
-      </div>
-      
-      {view === 'list' ? (
-        <div className="list-container">
-          <AutoSizer>
-            {({ height, width }) => (
-              <List
-                width={width}
-                height={height}
-                rowCount={filteredCandidates.length}
-                rowHeight={70}
-                rowRenderer={rowRenderer}
-                overscanRowCount={10}
-              />
-            )}
-          </AutoSizer>
+    <>
+      <AddNoteModal 
+        isOpen={noteModalState.isOpen}
+        onClose={() => setNoteModalState({ isOpen: false, candidateId: null, newStage: null })}
+        onSave={handleSaveNoteAndMove}
+        candidateName={candidateForModal ? candidateForModal.name : ''}
+        newStage={noteModalState.newStage}
+      />
+    
+      <div className="candidates-page">
+        <h1>Candidates</h1>
+        <div className="controls">
+          <input
+            type="text"
+            placeholder="Search by name or email..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="filter-input"
+          />
+          {view === 'list' && (
+            <select value={stageFilter} onChange={(e) => setStageFilter(e.target.value)} className="filter-select">
+              <option value="">All Stages</option>
+              {STAGES.map(s => <option key={s} value={s}>{s}</option>)}
+            </select>
+          )}
+          <button onClick={() => setView(view === 'list' ? 'kanban' : 'list')} className="btn btn-primary">
+            Switch to {view === 'list' ? 'Kanban' : 'List'} View
+          </button>
         </div>
-      ) : (
-        <DragDropContext onDragEnd={handleOnDragEnd}>
-          <div className="kanban-board">
-            {STAGES.map(stage => {
-              // Filter candidates for this specific stage inside the map function
-              const candidatesInStage = filteredCandidates.filter(c => c.stage === stage);
-              return (
-                <Droppable key={stage} droppableId={stage}>
-                  {(provided, snapshot) => (
-                    <div className={`kanban-column ${snapshot.isDraggingOver ? 'dragging-over' : ''}`} ref={provided.innerRef} {...provided.droppableProps}>
-                      <h2>{stage} ({candidatesInStage.length})</h2>
-                      <div className="card-list">
-                        {candidatesInStage.map((candidate, index) => (
-                          <Draggable key={candidate.id} draggableId={candidate.id.toString()} index={index}>
-                            {(provided, snapshot) => (
-                              <Link to={`/candidates/${candidate.id}`} className="kanban-card-link">
-                                <div className={`kanban-card ${snapshot.isDragging ? 'is-dragging' : ''}`} ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-                                  <div className="kanban-card-header">
-                                    <ProfileAvatar name={candidate.name} />
-                                    <strong>{candidate.name}</strong>
-                                  </div>
-                                  <p className="kanban-card-email"><MailIcon /> {candidate.email}</p>
-                                </div>
-                              </Link>
-                            )}
-                          </Draggable>
-                        ))}
-                        {provided.placeholder}
-                      </div>
-                    </div>
-                  )}
-                </Droppable>
-              )
-            })}
+        
+        {view === 'list' ? (
+          <div className="list-container">
+            <AutoSizer>
+              {({ height, width }) => (
+                <List
+                  width={width} height={height} rowCount={filteredCandidates.length}
+                  rowHeight={70} rowRenderer={rowRenderer} overscanRowCount={10}
+                />
+              )}
+            </AutoSizer>
           </div>
-        </DragDropContext>
-      )}
-    </div>
+        ) : (
+          <DragDropContext onDragEnd={handleOnDragEnd}>
+            <div className="kanban-board">
+              {STAGES.map(stage => {
+                const candidatesInStage = filteredCandidates.filter(c => c.stage === stage);
+                return (
+                  <Droppable key={stage} droppableId={stage}>
+                    {(provided, snapshot) => (
+                      <div className={`kanban-column ${snapshot.isDraggingOver ? 'dragging-over' : ''}`} ref={provided.innerRef} {...provided.droppableProps}>
+                        <h2>{stage} ({candidatesInStage.length})</h2>
+                        <div className="card-list">
+                          {candidatesInStage.map((candidate, index) => (
+                            <Draggable key={candidate.id} draggableId={candidate.id.toString()} index={index}>
+                              {(provided, snapshot) => (
+                                <Link to={`/candidates/${candidate.id}`} className="kanban-card-link">
+                                  <div className={`kanban-card ${snapshot.isDragging ? 'is-dragging' : ''}`} ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+                                    <div className="kanban-card-header">
+                                      <ProfileAvatar name={candidate.name} />
+                                      <strong>{candidate.name}</strong>
+                                    </div>
+                                    <p className="kanban-card-email"><MailIcon /> {candidate.email}</p>
+                                  </div>
+                                </Link>
+                              )}
+                            </Draggable>
+                          ))}
+                          {provided.placeholder}
+                        </div>
+                      </div>
+                    )}
+                  </Droppable>
+                )
+              })}
+            </div>
+          </DragDropContext>
+        )}
+      </div>
+    </>
   );
 };
 

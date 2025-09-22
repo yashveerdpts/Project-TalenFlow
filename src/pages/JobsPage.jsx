@@ -48,7 +48,20 @@ function JobsPage() {
                 payload: { ...filters, search: e.target.value },
               })
             }
+          /> 
+
+          <input
+            className="filter-input"
+            placeholder="Search by tag..."
+            value={filters.tags}
+            onChange={(e) =>
+              dispatch({
+                type: "SET_FILTERS",
+                payload: { ...filters, tags: e.target.value },
+              })
+            }
           />
+  
           <select
             className="filter-select"
             value={filters.status}

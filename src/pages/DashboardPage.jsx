@@ -62,9 +62,7 @@ const DashboardPage = () => {
     <div className={`dashboard-layout ${isSidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
       {/* --- Collapsible Sidebar --- */}
       <aside className="dashboard-sidebar">
-        <div className="sidebar-header">
-          <h3>TalentFlow</h3>
-        </div>
+        
         <nav className="sidebar-nav">
           <Link to="/jobs"><JobIcon /> <span>Jobs</span></Link>
           <Link to="/candidates"><CandidateIcon /> <span>Candidates</span></Link>

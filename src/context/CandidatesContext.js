@@ -1,58 +1,102 @@
-// src/context/CandidatesContext.js
-import React, { createContext, useState, useEffect, useCallback } from "react";
+import React, { createContext, useReducer, useEffect, useCallback } from "react";
+import { db } from "../dexieDB";
+import AddNoteModal from '../components/AddNoteModal'; 
 
 export const CandidatesContext = createContext();
 
+// Reducer to manage all candidate-related state changes
+const candidatesReducer = (state, action) => {
+  switch (action.type) {
+    case 'SET_LOADING':
+      return { ...state, loading: action.payload };
+    case 'SET_ERROR':
+      return { ...state, error: action.payload };
+    case 'SET_CANDIDATES':
+      return { ...state, candidates: action.payload, loading: false };
+    case 'UPDATE_SINGLE_CANDIDATE':
+      return {
+        ...state,
+        candidates: state.candidates.map(c =>
+          c.id === action.payload.id ? action.payload : c
+        ),
+      };
+    case 'ADD_NOTE_SUCCESS':
+        return {
+          ...state,
+          candidates: state.candidates.map(c => 
+            c.id === action.payload.candidateId 
+              ? { ...c, notes: [...(c.notes || []), action.payload.note] } 
+              : c
+          ),
+        };
+    default:
+      return state;
+  }
+};
+
 export const CandidatesProvider = ({ children }) => {
-  const [candidates, setCandidates] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [state, dispatch] = useReducer(candidatesReducer, {
+    candidates: [],
+    loading: true,
+    error: null,
+  });
 
   const fetchCandidates = useCallback(async () => {
-    setLoading(true);
+    dispatch({ type: 'SET_LOADING', payload: true });
     try {
-      const response = await fetch("/api/candidates");
-      const data = await response.json();
-      setCandidates(data.candidates);
+      const candidatesFromDB = await db.candidates.toArray();
+      dispatch({ type: 'SET_CANDIDATES', payload: candidatesFromDB });
     } catch (e) {
-      setError("Failed to fetch candidates");
+      dispatch({ type: 'SET_ERROR', payload: "Failed to fetch candidates" });
       console.error(e);
-    } finally {
-      setLoading(false);
     }
   }, []);
 
-  const updateCandidateStage = async (candidateId, newStage) => {
-    const originalCandidates = [...candidates];
-    
-    // Optimistic UI update
-    const updatedCandidates = candidates.map(c => 
-        c.id === candidateId ? { ...c, stage: newStage } : c
-    );
-    setCandidates(updatedCandidates);
+  const updateCandidateStage = async (candidateId, newStage, noteText = '') => {
+  try {
+    const id = Number(candidateId);
+
+    const timelineEntry = {
+      stage: newStage,
+      date: new Date().toISOString(),
+      ...(noteText.trim() && { note: noteText.trim() })
+    };
+
+    // Use modify instead of db.core.util.modify
+    await db.candidates.where({ id }).modify(candidate => {
+      candidate.stage = newStage;
+      if (!candidate.timeline) candidate.timeline = [];
+      candidate.timeline.push(timelineEntry);
+    });
+
+    const updatedCandidate = await db.candidates.get(id);
+    dispatch({ type: 'UPDATE_SINGLE_CANDIDATE', payload: updatedCandidate });
+  } catch (e) {
+    dispatch({ type: 'SET_ERROR', payload: 'Failed to update candidate stage.' });
+    console.error(e);
+  }
+};
+  const addNoteToCandidate = async (candidateId, noteText) => {
+    if (!noteText.trim()) return;
+
+    const newNote = {
+      id: Date.now(),
+      text: noteText,
+      date: new Date().toISOString(),
+    };
 
     try {
-        const response = await fetch(`/api/candidates/${candidateId}`, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ stage: newStage })
-        });
-
-        if (!response.ok) {
-            throw new Error('Failed to update stage');
-        }
-        
-        const data = await response.json();
-        
-        // Final update with server response (includes timeline)
-        setCandidates(prev => prev.map(c => c.id === data.candidate.id ? data.candidate : c));
-
-    } catch (e) {
-        setError('Failed to update candidate stage. Reverting.');
-        setCandidates(originalCandidates); // Revert on error
-        console.error(e);
+      // Update the note in Dexie DB
+      await db.candidates.where({ id: candidateId }).modify(candidate => {
+        if (!candidate.notes) candidate.notes = [];
+        candidate.notes.push(newNote);
+      });
+      
+      // Optimistically update the UI
+      dispatch({ type: 'ADD_NOTE_SUCCESS', payload: { candidateId, note: newNote } });
+    } catch (error) {
+      dispatch({ type: 'SET_ERROR', payload: 'Failed to add note.' });
+      console.error('Failed to add note:', error);
     }
   };
 
@@ -61,7 +105,7 @@ export const CandidatesProvider = ({ children }) => {
   }, [fetchCandidates]);
 
   return (
-    <CandidatesContext.Provider value={{ candidates, loading, error, updateCandidateStage }}>
+    <CandidatesContext.Provider value={{ ...state, updateCandidateStage, addNoteToCandidate }}>
       {children}
     </CandidatesContext.Provider>
   );

@@ -1,202 +1,110 @@
-/* --- Google Font Import --- */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+/* --- ================================== --- */
+/* ---     Candidate Details Page Styles  --- */
+/* --- ================================== --- */
 
-/* --- CSS Variables (Consistent with the previous theme) --- */
-:root {
-    --primary-color: #6a5af9;
-    --secondary-color: #f7aef8;
-    --background-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-    --surface-color: #ffffff;
-    --text-color: #333;
-    --text-light: #555;
-    --shadow-color: rgba(0, 0, 0, 0.1);
-    --shadow-heavy: rgba(0, 0, 0, 0.15);
-    --border-radius: 12px;
-    --transition-speed: 0.3s;
-}
-
-/* --- General Page Styling --- */
 .details-page {
-    font-family: 'Poppins', sans-serif;
-    background: var(--background-gradient);
-    min-height: 100vh;
-    padding: 2rem;
-    color: var(--text-color);
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-/* --- Reusable Card Style --- */
-.profile-header,
-.details-body > div {
-    background: var(--surface-color);
-    border-radius: var(--border-radius);
-    padding: 2rem;
-    box-shadow: 0 8px 30px var(--shadow-heavy);
-    margin-bottom: 2rem;
-}
-
-/* --- Profile Header --- */
+/* --- Top Header Section --- */
 .profile-header {
-    text-align: center;
-    position: relative;
-    overflow: hidden;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 2rem;
+  background-color: var(--surface-color);
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 20px var(--shadow-color);
+  border: 1px solid var(--border-color);
+  margin-bottom: 2rem;
 }
 
-.profile-header::before {
-    content: '';
-    position: absolute;
-    top: -50px;
-    left: -50px;
-    width: 150px;
-    height: 150px;
-    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-    opacity: 0.1;
-    border-radius: 50%;
-    filter: blur(20px);
+.profile-header-info {
+  flex-grow: 1;
 }
 
 .profile-header h2 {
-    margin: 0 0 0.5rem 0;
-    font-size: 2.2rem;
-    font-weight: 700;
+  margin: 0 0 0.25rem 0;
+  font-size: 1.8rem;
 }
 
 .profile-header p {
-    margin: 0 0 1rem 0;
-    font-size: 1.1rem;
-    color: var(--text-light);
+  margin: 0;
+  color: var(--text-light);
 }
 
-/* Reusing the stage badge style from the previous page */
-.stage-badge {
-    background-color: rgba(106, 90, 249, 0.1);
-    color: var(--primary-color);
-    padding: 0.4rem 1rem;
-    border-radius: 20px;
-    font-size: 0.9rem;
-    font-weight: 500;
-    display: inline-block;
+.profile-header .profile-avatar {
+  width: 60px;
+  height: 60px;
+  font-size: 1.5rem;
 }
 
-/* --- Details Body Layout (Timeline & Notes) --- */
+.job-link-container {
+  margin-top: 0.5rem !important;
+}
+
+.job-link {
+  color: var(--primary-color);
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.job-link:hover {
+  text-decoration: underline;
+  opacity: 0.8;
+}
+
+/* --- Two-Column Body Section --- */
 .details-body {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 2rem;
+  align-items: flex-start;
 }
 
-.details-body h3 {
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-top: 0;
-    padding-bottom: 1rem;
-    border-bottom: 2px solid #eee;
+.timeline-section,
+.notes-section {
+  background: var(--surface-color);
+  border-radius: var(--border-radius);
+  padding: 2rem;
+  box-shadow: 0 4px 20px var(--shadow-color);
+  border: 1px solid var(--border-color);
 }
 
-/* --- Timeline Section --- */
-.timeline-section ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    position: relative;
-    padding-left: 1.5rem; /* Space for the timeline line */
+.timeline-section h3,
+.notes-section h3 {
+  margin-top: 0;
+  font-size: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-color);
 }
 
-/* The vertical timeline line */
-.timeline-section ul::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 10px;
-    bottom: 10px;
-    width: 2px;
-    background-color: rgba(106, 90, 249, 0.2);
-}
+/* --- Timeline --- */
+.timeline-section ul { list-style: none; padding: 0; margin: 1.5rem 0 0 0; }
+.timeline-section li { padding-bottom: 1.5rem; border-left: 2px solid var(--border-color); position: relative; padding-left: 1.5rem; }
+.timeline-section li:last-child { border-left: none; padding-bottom: 0; }
+.timeline-section li::before { content: ''; width: 12px; height: 12px; background: var(--primary-color); border-radius: 50%; position: absolute; left: -7px; top: 4px; }
 
-.timeline-section li {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 0;
-    position: relative;
-}
+.timeline-item-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+.timeline-item-header small { color: var(--text-light); font-size: 0.8rem; }
+.timeline-note { background-color: #f9fafb; border-left: 3px solid var(--primary-color); padding: 0.75rem 1rem; margin: 0.5rem 0 0 0; border-radius: 4px; font-style: italic; color: var(--text-light); }
+.dark-theme .timeline-note { background-color: rgba(74, 85, 104, 0.3); }
 
-/* The dot on the timeline line */
-.timeline-section li::before {
-    content: '';
-    position: absolute;
-    left: -1.5rem; /* Align with the ul padding */
-    top: 50%;
-    transform: translate(-45%, -50%);
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background-color: var(--primary-color);
-    border: 2px solid var(--surface-color);
-}
+/* --- Notes --- */
+.notes-section textarea { width: 100%; min-height: 80px; padding: 0.8rem; border-radius: 8px; border: 1px solid var(--border-color); margin-bottom: 1rem; }
+.notes-section .btn { display: block; width: 100%; }
+.notes-list { margin-top: 1.5rem; }
+.note-item { padding: 1rem 0; border-top: 1px solid var(--border-color); }
+.note-item p { margin: 0 0 0.5rem 0; }
+.note-item small { color: var(--text-light); }
+.mention { background-color: rgba(106, 90, 249, 0.15); color: var(--primary-color); font-weight: 600; padding: 0.1rem 0.5rem; border-radius: 6px; }
 
-
-.timeline-section li span {
-    color: var(--text-light);
-    font-size: 0.9rem;
-    background-color: #f5f7fa;
-    padding: 0.2rem 0.6rem;
-    border-radius: 6px;
-}
-
-/* --- Notes Section --- */
-.notes-section textarea {
-    width: 100%;
-    min-height: 120px;
-    border: 1px solid #ddd;
-    border-radius: var(--border-radius);
-    padding: 1rem;
-    font-family: 'Poppins', sans-serif;
-    font-size: 1rem;
-    resize: vertical;
-    transition: all var(--transition-speed) ease;
-    margin-bottom: 1rem;
-}
-
-.notes-section textarea:focus {
-    outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(106, 90, 249, 0.3);
-}
-
-/* Note preview area */
-.rendered-note {
-    background-color: #f5f7fa;
-    border-radius: var(--border-radius);
-    padding: 1rem;
-    min-height: 50px;
-    color: var(--text-light);
-    line-height: 1.6;
-}
-
-.mention {
-    background-color: rgba(106, 90, 249, 0.15);
-    color: var(--primary-color);
-    font-weight: 600;
-    padding: 0.1rem 0.5rem;
-    border-radius: 6px;
-}
-
-
-/* --- Responsive Design --- */
+/* Responsive Adjustments */
 @media (max-width: 900px) {
-    .details-body {
-        grid-template-columns: 1fr;
-    }
-}
-
-@media (max-width: 600px) {
-    .details-page {
-        padding: 1rem;
-    }
-    .profile-header,
-    .details-body > div {
-        padding: 1.5rem;
-    }
+  .details-body {
+    grid-template-columns: 1fr;
+  }
 }

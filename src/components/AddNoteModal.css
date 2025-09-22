@@ -1,0 +1,23 @@
+/* Using similar styles to your other modals for consistency */
+.modal-overlay {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(30, 30, 40, 0.6);
+  backdrop-filter: blur(5px);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: var(--surface-color);
+  padding: 2rem 2.5rem;
+  border-radius: var(--border-radius);
+  box-shadow: 0 10px 40px var(--shadow-heavy);
+  width: 100%;
+  max-width: 500px;
+}
+
+.modal-content h2 { margin-top: 0; }
+.modal-content p { color: var(--text-light); margin-bottom: 1.5rem; }
+.form-group label { display: block; font-weight: 500; margin-bottom: 0.5rem; }
+.form-group textarea { width: 100%; min-height: 80px; padding: 0.8rem 1rem; border: 1px solid var(--border-color); border-radius: 8px; font-size: 1rem; }
+.form-actions { display: flex; justify-content: flex-end; gap: 1rem; margin-top: 2rem; }

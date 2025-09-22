@@ -1,59 +1,66 @@
-
 import React, { useEffect } from 'react';
 import { runSeed } from './seedDB';
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import { ThemeProvider } from './context/ThemeContext';
+import { BrowserRouter as Router, Routes, Route, Outlet } from "react-router-dom";
 
-// Pages
+// Context Providers
+import { ThemeProvider } from './context/ThemeContext';
+import { JobsProvider } from './context/JobsContext';
+import { CandidatesProvider } from './context/CandidatesContext';
+
+// Components and Pages
+import Navbar from "./components/Navbar";
 import DashboardPage from './pages/DashboardPage';
 import JobsPage from "./pages/JobsPage";
-import JobDetailsPage from "./pages/JobDetails"; // Corrected the import name for clarity
+import JobDetailsPage from "./pages/JobDetails";
 import CandidatesPage from './pages/CandidatePage';
 import CandidateDetailsPage from './pages/CandidateDetailsPage';
 import AssessmentBuilderPage from './pages/AssessmentBuilderPage';
-import Navbar from "./components/Navbar";
-// Context Providers
-import { JobsProvider } from './context/JobsContext';
-import { CandidatesProvider } from './context/CandidatesContext';
 import AssessmentPage from "./pages/AssessmentPage";
+
 import "react-toastify/dist/ReactToastify.css";
-import './App.css'; // Optional: for better nav styling
+import './App.css';
+
+// A Layout component to apply the Navbar to every page
+const Layout = () => {
+  return (
+    <>
+      <Navbar />
+      <main style={{ padding: "0 1rem" }}>
+        {/* Child routes will render here */}
+        <Outlet /> 
+      </main>
+    </>
+  );
+};
 
 function App() {
-
-   useEffect(() => {
+  useEffect(() => {
     runSeed();
   }, []);
 
   return (
+    // All providers are now cleanly organized here
     <ThemeProvider>
-    <JobsProvider>
-      <CandidatesProvider>
-        <Router>
-          <Navbar />
-          
-          <main style={{ padding: "0 1rem" }}>
+      <JobsProvider>
+        <CandidatesProvider>
+          <Router>
             <Routes>
-              {/* Job Routes */} 
-               <Route path="/" element={<DashboardPage />} /> 
-              <Route path="/jobs" element={<JobsPage />} />
-              <Route path="/jobs/:jobId" element={<JobDetailsPage />} /> 
-              <Route path="/assessments" element={<AssessmentPage />} />
-              {/* Candidate Routes */}
-              <Route path="/candidates" element={<CandidatesPage />} />
-              <Route path="/candidates/:id" element={<CandidateDetailsPage />} />
-
-              {/* Assessment Routes */}
-              <Route path="/jobs/:jobId" element={<JobDetailsPage />} />
-              <Route path="/jobs/:jobId/assessment" element={<AssessmentBuilderPage />} />
-              {/* Optional: Redirect root to jobs page */}
-              <Route path="/" element={<JobsPage />} />
+              {/* All pages that should have a navbar are children of the Layout route */}
+              <Route element={<Layout />}>
+                <Route path="/" element={<DashboardPage />} />
+                <Route path="/jobs" element={<JobsPage />} />
+                <Route path="/jobs/:jobId" element={<JobDetailsPage />} />
+                <Route path="/jobs/:jobId/assessment" element={<AssessmentBuilderPage />} />
+                <Route path="/assessments" element={<AssessmentPage />} />
+                <Route path="/candidates" element={<CandidatesPage />} />
+                <Route path="/candidates/:id" element={<CandidateDetailsPage />} />
+              </Route>
             </Routes>
-          </main>
-        </Router>
-      </CandidatesProvider>
-    </JobsProvider>
+          </Router>
+        </CandidatesProvider>
+      </JobsProvider>
     </ThemeProvider>
   );
 }
+
 export default App;

@@ -1,38 +1,127 @@
-.App {
-  text-align: center;
+/* --- ================================== --- */
+/* ---        1. GLOBAL STYLES & THEME    --- */
+/* --- ================================== --- */
+
+/* Import Font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* --- Light Mode Variables (Default) --- */
+:root {
+  --primary-color: #6a5af9;
+  --secondary-color: #f7aef8;
+  --background-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  --surface-color: #ffffff;
+  --border-color: #e0e0e0;
+  --text-color: #212529;
+  --text-light: #555;
+  --shadow-color: rgba(0, 0, 0, 0.05);
+  --shadow-heavy: rgba(0, 0, 0, 0.1);
+  --border-radius: 12px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* --- Dark Mode Overrides --- */
+body.dark-theme {
+  --primary-color: #8b7ffc;
+  --background-gradient: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+  --surface-color: #2d3748;
+  --border-color: #4a5568;
+  --text-color: #f7fafc;
+  --text-light: #a0aec0;
+  --shadow-color: rgba(0, 0, 0, 0.2);
+  --shadow-heavy: rgba(0, 0, 0, 0.4);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+/* Base Body Styles */
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: var(--background-gradient);
+  color: var(--text-color);
+  transition: background-color 0.3s, color 0.3s;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+/* --- ================================== --- */
+/* ---       2. REUSABLE COMPONENTS       --- */
+/* --- ================================== --- */
+
+/* --- Navbar --- */
+.navbar {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  padding: 1rem 2rem;
+  background-color: var(--surface-color);
+  box-shadow: 0 2px 10px var(--shadow-color);
+  border-bottom: 1px solid var(--border-color);
+  position: sticky; top: 0; z-index: 100;
 }
+.navbar-brand a { font-size: 1.5rem; font-weight: 700; color: var(--primary-color); text-decoration: none; }
+.navbar-links { display: flex; gap: 2rem; }
+.navbar-links a { font-weight: 500; color: var(--text-light); text-decoration: none; font-size: 1.1rem; padding-bottom: 0.25rem; border-bottom: 2px solid transparent; transition: color 0.2s, border-color 0.2s; }
+.navbar-links a:hover { color: var(--text-color); }
+.navbar-links a.active { color: var(--primary-color); border-bottom-color: var(--primary-color); }
+.navbar-actions { min-width: 50px; }
+.theme-toggle-btn { background: none; border: none; padding: 0; cursor: pointer; }
 
-.App-link {
-  color: #61dafb;
-}
+/* --- Buttons --- */
+.btn { display: inline-block; padding: 0.7rem 1.3rem; border: none; border-radius: var(--border-radius, 10px); font-family: 'Poppins', sans-serif; font-size: 0.95rem; font-weight: 600; text-decoration: none; text-align: center; cursor: pointer; transition: all 0.2s ease-in-out; }
+.btn-primary { background: linear-gradient(45deg, var(--primary-color), var(--secondary-color)); color: white; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); }
+.btn-secondary { background-color: #f0f2f5; color: var(--text-light); border: 1px solid var(--border-color); }
+.dark-theme .btn-secondary { background-color: #4a5568; color: var(--text-color); }
+.btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
+/* --- Modals --- */
+.modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(30, 30, 40, 0.6); backdrop-filter: blur(5px); display: flex; align-items: center; justify-content: center; z-index: 1000; }
+.modal-content { background: var(--surface-color); padding: 2rem 2.5rem; border-radius: var(--border-radius); box-shadow: 0 10px 40px var(--shadow-heavy); width: 100%; max-width: 500px; }
+.form-actions { display: flex; justify-content: flex-end; gap: 1rem; margin-top: 2rem; }
+
+/* --- Status Badges --- */
+.status-badge { padding: 0.3rem 0.8rem; border-radius: 999px; font-weight: 500; font-size: 0.85rem; text-transform: capitalize; flex-shrink: 0; }
+.status-badge.status-active { background-color: rgba(34, 197, 94, 0.1); color: #16a34a; }
+.status-badge.status-archived { background-color: rgba(107, 114, 128, 0.1); color: #4b5563; }
+.status-badge.status-applied { background-color: rgba(59, 130, 246, 0.1); color: #2563eb; }
+.status-badge.status-screening { background-color: rgba(249, 115, 22, 0.1); color: #d97706; }
+.status-badge.status-interview { background-color: rgba(168, 85, 247, 0.1); color: #9333ea; }
+.status-badge.status-offer { background-color: rgba(22, 163, 74, 0.1); color: #15803d; }
+.status-badge.status-hired { background-color: rgba(22, 163, 74, 0.2); color: #15803d; font-weight: bold; }
+
+/* --- ================================== --- */
+/* ---           3. PAGE STYLES           --- */
+/* --- ================================== --- */
+
+/* --- Jobs & Candidates Page Controls --- */
+.jobs-page-container, .candidates-page { padding: 2rem; }
+.jobs-content, .candidates-content { max-width: 1100px; margin: 0 auto; }
+.jobs-header, .candidates-header, .assessments-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+.jobs-header h1, .candidates-page h1, .assessments-header h1 { margin: 0; font-size: 2.5rem; font-weight: 700; color: var(--primary-color); }
+.jobs-filters, .controls { display: flex; gap: 1.5rem; margin-bottom: 2.5rem; align-items: center; flex-wrap: wrap; }
+.filter-input, .filter-select { border: 1px solid var(--border-color); border-radius: var(--border-radius); padding: 0.9rem 1.2rem; font-size: 1rem; background-color: var(--surface-color); color: var(--text-color); box-shadow: 0 2px 8px var(--shadow-color); }
+.filter-input { flex-grow: 1; }
+.filter-select { -webkit-appearance: none; appearance: none; padding-right: 2.5rem; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%23555555'%3E%3Cpath fill-rule='evenodd' d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z' clip-rule='evenodd' /%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 0.7rem center; background-size: 1.5em 1.5em; }
+.dark-theme .filter-select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%23a0aec0'%3E%3Cpath fill-rule='evenodd' d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z' clip-rule='evenodd' /%3E%3C/svg%3E"); }
+.filter-input:focus, .filter-select:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(106, 90, 249, 0.3); }
+
+/* --- Jobs Page --- */
+.job-card { display: flex; justify-content: space-between; align-items: center; padding: 1.5rem; background-color: var(--surface-color); border-radius: var(--border-radius); border: 1px solid var(--border-color); box-shadow: 0 4px 15px var(--shadow-color); }
+.job-card:hover { transform: translateY(-4px); box-shadow: 0 8px 25px var(--shadow-heavy); }
+.jobs-pagination { display: flex; justify-content: center; align-items: center; gap: 1rem; margin-top: 2.5rem; color: var(--text-light); }
+
+/* --- Candidates Page --- */
+.list-container { flex-grow: 1; background: var(--surface-color); border-radius: var(--border-radius); padding: 1rem; box-shadow: 0 8px 30px var(--shadow-heavy); border: 1px solid var(--border-color); }
+.candidate-row { display: flex; justify-content: space-between; align-items: center; padding: 0 1rem; border-bottom: 1px solid var(--border-color); }
+.kanban-board { display: flex; gap: 1.5rem; overflow-x: auto; padding-bottom: 1.5rem; align-items: flex-start; flex-grow: 1; min-height: 0; }
+.kanban-column { background-color: rgba(255, 255, 255, 0.7); border-radius: var(--border-radius); padding: 1rem; width: 320px; flex-shrink: 0; display: flex; flex-direction: column; max-height: 100%; border: 1px solid var(--border-color); }
+.dark-theme .kanban-column { background-color: rgba(45, 55, 72, 0.7); }
+
+/* --- Dashboard Page --- */
+.dashboard-layout { display: grid; grid-template-columns: 250px 1fr; height: 100vh; transition: grid-template-columns 0.3s ease; }
+.dashboard-layout.sidebar-closed { grid-template-columns: 0 1fr; }
+.dashboard-sidebar { background-color: var(--surface-color); border-right: 1px solid var(--border-color); padding: 1.5rem; overflow: hidden; white-space: nowrap; }
+.dashboard-main { padding: 2rem; background: var(--background-gradient); overflow-y: auto; }
+.summary-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem; }
+.summary-card { background-color: var(--surface-color); padding: 1.5rem; border-radius: var(--border-radius); box-shadow: 0 4px 15px var(--shadow-color); border: 1px solid var(--border-color); }
+.summary-card p { margin: 0; font-size: 2.5rem; font-weight: 700; color: var(--primary-color); }
+.dashboard-columns { display: grid; grid-template-columns: 1.5fr 1fr; gap: 1.5rem; align-items: flex-start; }
+.dashboard-list-card { background-color: var(--surface-color); padding: 1.5rem; border-radius: var(--border-radius); box-shadow: 0 4px 15px var(--shadow-color); border: 1px solid var(--border-color); }
+
+/* --- Other page styles can be added here --- */
