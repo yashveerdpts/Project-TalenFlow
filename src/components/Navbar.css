@@ -48,3 +48,14 @@
 .navbar-actions {
   min-width: 50px; /* Placeholder for future icons/buttons */
 }
+.navbar-links span {
+  margin-left: 0.5rem;
+  font-weight: 600;
+  
+}
+.navbar-links svg {
+  vertical-align: middle;
+  fill: var(--text-light);
+  width: 25px;
+  height: 25px;
+}
