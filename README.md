@@ -2,7 +2,8 @@
 
 TalentFlow is a comprehensive, client-side hiring and recruitment management application built with React. It provides a robust interface for managing job postings, tracking candidates through a Kanban-style pipeline, building custom skill assessments, and viewing key hiring metrics on a central dashboard. The entire application runs in the browser without needing a backend, using Dexie.js (IndexedDB) for persistent local storage.
 
-![TalentFlow Screenshot](https://i.imgur.com/rS2hW2k.jpg)
+![TalentFlow Screenshot](<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/4b564152-aacf-4d18-b026-960226f55caa" />
+)
 
 ---
 
