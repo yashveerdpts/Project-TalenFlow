@@ -65,7 +65,7 @@ TalentFlow is a comprehensive, client-side hiring and recruitment management app
     npm start
     ```
 
-The application will open at `https://talent-flow-omega-one.vercel.app`. The first time it runs, the database will be automatically seeded with sample data.
+The application will open at `(https://talent-flow-omega-one.vercel.app)`. The first time it runs, the database will be automatically seeded with sample data.
 
 **Login Credentials:**
 * **Email:** `admin@talentflow.com`
