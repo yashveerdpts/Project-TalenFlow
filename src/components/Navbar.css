@@ -58,4 +58,12 @@
   fill: var(--text-light);
   width: 25px;
   height: 25px;
-}
+} 
+.theme-toggle-btn { 
+  margin-left: 20px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}  
+

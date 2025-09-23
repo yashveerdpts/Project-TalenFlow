@@ -94,7 +94,7 @@ const AssessmentBuilderPage = () => {
     <div className="builder-page">
       <div className="builder-panel">
         <h1>Assessment Builder</h1>
-        <input
+        <input 
           type="text"
           className="assessment-title-input"
           value={assessmentState.title}
@@ -102,7 +102,8 @@ const AssessmentBuilderPage = () => {
         />
         {assessmentState.sections.map((section, sIdx) => (
           <div key={section.id} className="section-builder">
-            <input
+            <input 
+            
               className="section-title-input"
               value={section.title}
               onChange={(e) => dispatch({ type: 'UPDATE_SECTION_TITLE', payload: { sectionIndex: sIdx, title: e.target.value } })}

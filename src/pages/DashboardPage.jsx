@@ -1,6 +1,8 @@
 import React, { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useLiveQuery } from 'dexie-react-hooks';
+import { useTheme } from '../context/ThemeContext'; // Import the new hook
+import { useAuth } from '../context/AuthContext'; 
 import { db } from '../dexieDB';
 import ProfileAvatar from '../components/ProfileAvatar';
 import './DashboardPage.css'; // The new CSS for the dashboard
@@ -31,9 +33,16 @@ const AssessmentIcon = () => (
     <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
   </svg>
 );
+ 
+const ThemeIcon = ({ isDarkMode }) => (
+  <span style={{ fontSize: '24px', verticalAlign: 'middle', cursor: 'pointer' }}>
+    {isDarkMode ? '🌙' : '☀️'}
+  </span>
+);
 
-
-const DashboardPage = () => {
+const DashboardPage = () => { 
+  const { theme, toggleTheme } = useTheme(); // Use the theme context
+    const { logout } = useAuth();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   // --- Data Fetching ---
@@ -61,7 +70,8 @@ const DashboardPage = () => {
   const activeJobs = useMemo(() => {
     if (!jobs) return [];
     return jobs.filter(j => j.status === 'active').slice(0, 5);
-  }, [jobs]);
+  }, [jobs]); 
+  
 
   if (!jobs || !candidates) {
     return <div>Loading Dashboard...</div>;
@@ -72,10 +82,17 @@ const DashboardPage = () => {
       {/* --- Collapsible Sidebar --- */}
       <aside className="dashboard-sidebar">
         
-        <nav className="sidebar-nav">
+        <nav className="sidebar-nav"> 
+            <div className="navbar-brand">
+        <Link to="/">TᴀʟᴇɴᴛFʟᴏᴡ</Link>
+      </div>
           <Link to="/jobs"><JobIcon /> <span>Jobs</span></Link>
           <Link to="/candidates"><CandidateIcon /> <span>Candidates</span></Link>
           <Link to="/assessments"><AssessmentIcon /> <span>Assessments</span></Link>
+
+        <button onClick={logout} className="btn btn-secondary" style={{marginTop: '400px'}}>Logout</button>
+
+
           {/* Add more links here */}
         </nav>
       </aside>

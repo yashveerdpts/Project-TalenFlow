@@ -1,0 +1,103 @@
+/* --- ================================== --- */
+/* ---         Login Page Styles          --- */
+/* --- ================================== --- */
+
+.login-page-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2rem;
+  background: var(--background-gradient);
+}
+
+/* --- Login Card --- */
+.login-card {
+  width: 100%;
+  max-width: 400px;
+  padding: 2.5rem;
+  background-color: var(--surface-color);
+  border-radius: var(--border-radius);
+  box-shadow: 0 10px 40px var(--shadow-heavy);
+  border: 1px solid var(--border-color);
+  animation: popIn 0.5s ease-out; /* Add a subtle animation */
+}
+
+.login-card h1 {
+  text-align: center;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+
+.login-card p {
+  text-align: center;
+  color: var(--text-light);
+  margin-bottom: 2rem;
+  font-size: 1.1rem;
+}
+
+/* --- Form Group & Elements --- */
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: var(--text-color);
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.9rem 1.2rem;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: 'Poppins', sans-serif;
+  background-color: var(--surface-color);
+  color: var(--text-color);
+  box-shadow: 0 2px 8px var(--shadow-color);
+  transition: all 0.2s ease-in-out;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(106, 90, 249, 0.3);
+}
+
+/* --- Button Styling --- */
+.login-card .btn {
+  width: 100%;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  font-size: 1.1rem;
+  margin-top: 1rem;
+}
+
+/* --- Error Message --- */
+.error-message {
+  color: #e53e3e;
+  background-color: rgba(239, 68, 68, 0.1);
+  text-align: center;
+  font-weight: 500;
+  padding: 0.8rem;
+  border-radius: 8px;
+  margin-top: 1.5rem;
+}
+
+/* --- Simple Animation --- */
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

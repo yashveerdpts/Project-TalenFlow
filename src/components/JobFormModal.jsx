@@ -16,7 +16,7 @@ function JobFormModal({ isOpen, onClose, jobToEdit }) {
   
   const isEditMode = Boolean(jobToEdit);
 
-  // Effect to auto-generate slug from title, but only if slug is not manually edited
+  // Effect to auto-generate slug from title, but only if slug is not manually edited++
   useEffect(() => {
     // Check if the current slug was derived from the current title
     const isSlugAuto = formData.slug === generateSlug(formData.title);

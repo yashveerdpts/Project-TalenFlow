@@ -14,6 +14,7 @@ function JobsPage() {
   const { list, filters, meta, loading } = state;
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [jobToEdit, setJobToEdit] = useState(null);
   // REMOVED: All theme state and functions are gone.
 
   useEffect(() => {
@@ -22,6 +23,22 @@ function JobsPage() {
     }, 300);
     return () => clearTimeout(handler);
   }, [dispatch, filters, meta.page]);
+
+  // --- NEW: Functions to handle opening the modal in create or edit mode ---
+  const handleOpenCreateModal = () => {
+    setJobToEdit(null); // Ensure we're in create mode
+    setIsModalOpen(true);
+  };
+
+  const handleOpenEditModal = (job) => {
+    setJobToEdit(job); // Set the job to edit
+    setIsModalOpen(true);
+  };
+  
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setJobToEdit(null); // Clean up after close
+  };
 
   const onDragEnd = (result) => {
     if (!result.destination) return;
@@ -113,6 +130,11 @@ function JobsPage() {
                           >
                             {job.status === "active" ? "Archive" : "Unarchive"}
                           </button>
+                          <button className="btn btn-secondary" onClick={(e) => {
+                            e.stopPropagation();
+                            setJobToEdit(job);
+                            setIsModalOpen(true);
+                          }}>Edit</button>
                         </div>
                       </li>
                     )}
@@ -142,7 +164,11 @@ function JobsPage() {
           </button>
         </div>
       </div>
-      <JobFormModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      <JobFormModal 
+        isOpen={isModalOpen} 
+        onClose={handleCloseModal}
+        jobToEdit={jobToEdit}
+      />
     </div>
   );
 }

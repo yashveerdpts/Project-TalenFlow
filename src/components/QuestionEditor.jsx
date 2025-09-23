@@ -33,7 +33,9 @@ const QuestionEditor = ({ question, sectionIndex, questionIndex, allQuestions, d
         placeholder="Question Text"
         value={question.text}
         onChange={(e) => handleFieldChange('text', e.target.value)}
-        className="question-text-input"
+        className="question-text-input" 
+     
+           
       />
       <div className="question-controls">
         <select value={question.type} onChange={(e) => handleFieldChange('type', e.target.value)}>

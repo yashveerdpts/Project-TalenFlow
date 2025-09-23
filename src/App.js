@@ -1,37 +1,38 @@
-import React, { useEffect } from 'react';
-import { runSeed } from './seedDB';
+// src/App.jsx
+import React, { useEffect } from "react";
+import { runSeed } from "./seedDB";
 import { BrowserRouter as Router, Routes, Route, Outlet } from "react-router-dom";
 
 // Context Providers
-import { ThemeProvider } from './context/ThemeContext';
-import { JobsProvider } from './context/JobsContext';
-import { CandidatesProvider } from './context/CandidatesContext';
+import { ThemeProvider } from "./context/ThemeContext";
+import { JobsProvider } from "./context/JobsContext";
+import { CandidatesProvider } from "./context/CandidatesContext";
+import { AuthProvider } from "./context/AuthContext";
 
 // Components and Pages
 import Navbar from "./components/Navbar";
-import DashboardPage from './pages/DashboardPage';
+import DashboardPage from "./pages/DashboardPage";
+import ProtectedRoute from "./components/ProtectedRoute";
 import JobsPage from "./pages/JobsPage";
 import JobDetailsPage from "./pages/JobDetails";
-import CandidatesPage from './pages/CandidatePage';
-import CandidateDetailsPage from './pages/CandidateDetailsPage';
-import AssessmentBuilderPage from './pages/AssessmentBuilderPage';
+import CandidatesPage from "./pages/CandidatePage";
+import CandidateDetailsPage from "./pages/CandidateDetailsPage";
+import AssessmentBuilderPage from "./pages/AssessmentBuilderPage";
 import AssessmentPage from "./pages/AssessmentPage";
+import LoginPage from "./pages/LoginPage";
 
 import "react-toastify/dist/ReactToastify.css";
-import './App.css';
+import "./App.css";
 
-// A Layout component to apply the Navbar to every page
-const Layout = () => {
-  return (
-    <>
-      <Navbar />
-      <main style={{ padding: "0 1rem" }}>
-        {/* Child routes will render here */}
-        <Outlet /> 
-      </main>
-    </>
-  );
-};
+// Layout wrapper with Navbar
+const Layout = () => (
+  <>
+    <Navbar />
+    <main style={{ padding: "0 1rem" }}>
+      <Outlet />
+    </main>
+  </>
+);
 
 function App() {
   useEffect(() => {
@@ -39,26 +40,41 @@ function App() {
   }, []);
 
   return (
-    // All providers are now cleanly organized here
     <ThemeProvider>
-      <JobsProvider>
-        <CandidatesProvider>
-          <Router>
-            <Routes>
-              {/* All pages that should have a navbar are children of the Layout route */}
-              <Route element={<Layout />}>
-                <Route path="/" element={<DashboardPage />} />
-                <Route path="/jobs" element={<JobsPage />} />
-                <Route path="/jobs/:jobId" element={<JobDetailsPage />} />
-                <Route path="/jobs/:jobId/assessment" element={<AssessmentBuilderPage />} />
-                <Route path="/assessments" element={<AssessmentPage />} />
-                <Route path="/candidates" element={<CandidatesPage />} />
-                <Route path="/candidates/:id" element={<CandidateDetailsPage />} />
-              </Route>
-            </Routes>
-          </Router>
-        </CandidatesProvider>
-      </JobsProvider>
+      <Router>
+        <AuthProvider>
+          <JobsProvider>
+            <CandidatesProvider>
+              <Routes>
+                {/* Public */}
+                <Route path="/login" element={<LoginPage />} />
+
+                {/* Protected */}
+                <Route element={<ProtectedRoute />}>
+                  {/* Dashboard without Navbar */}
+                  <Route path="/" element={<DashboardPage />} />
+
+                  {/* Routes with Navbar */}
+                  <Route element={<Layout />}>
+                    <Route path="/jobs" element={<JobsPage />} />
+                    <Route path="/jobs/:jobId" element={<JobDetailsPage />} />
+                    <Route
+                      path="/jobs/:jobId/assessment"
+                      element={<AssessmentBuilderPage />}
+                    />
+                    <Route path="/assessments" element={<AssessmentPage />} />
+                    <Route path="/candidates" element={<CandidatesPage />} />
+                    <Route
+                      path="/candidates/:id"
+                      element={<CandidateDetailsPage />}
+                    />
+                  </Route>
+                </Route>
+              </Routes>
+            </CandidatesProvider>
+          </JobsProvider>
+        </AuthProvider>
+      </Router>
     </ThemeProvider>
   );
 }
