@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../dexieDB';
-import CreateAssessmentModal from '../components/CreateAssessmentModal'; // Import the new modal
+import CreateAssessmentModal from '../components/CreateAssessmentModal';
 import './AssessmentsListPage.css';
 
 const AssessmentsListPage = () => {
   const navigate = useNavigate();
   const [assessmentsWithJobs, setAssessmentsWithJobs] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false); // State to control the modal
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const assessments = useLiveQuery(() => db.assessments.toArray(), []);
 
@@ -32,10 +32,8 @@ const AssessmentsListPage = () => {
 
   const handleCreate = (selectedJobId) => {
     if (selectedJobId) {
-      // If a job was selected, go to the builder for that job
       navigate(`/jobs/${selectedJobId}/assessment`);
     } else {
-      // If no job was selected, create a temporary ID for an unassigned assessment
       const tempId = `unassigned-${Date.now()}`;
       navigate(`/jobs/${tempId}/assessment`);
     }
@@ -45,7 +43,6 @@ const AssessmentsListPage = () => {
     if (jobId) {
       navigate(`/jobs/${jobId}/assessment`);
     } else {
-      // Handle editing unassigned assessments if needed
       alert("This assessment is not linked to a job.");
     }
   };

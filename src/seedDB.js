@@ -8,10 +8,8 @@ const ASSESSMENT_COUNT = 3;
 
 const STAGES = ["Applied", "Screening", "Interview", "Offer", "Hired" ,"Rejected"];
 
-// --- Helper to get a random item from an array ---
 const getRandom = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
-// --- 1. Seed Jobs ---
 const seedJobs = async () => {
   const jobs = [];
   for (let i = 0; i < JOB_COUNT; i++) {
@@ -30,7 +28,6 @@ const seedJobs = async () => {
   return await db.jobs.toArray();
 };
 
-// --- 2. Seed Candidates ---
 const seedCandidates = async (createdJobs) => {
   const candidates = [];
   const jobIds = createdJobs.map(j => j.id);
@@ -43,7 +40,6 @@ const seedCandidates = async (createdJobs) => {
       email: faker.internet.email({ firstName, lastName }),
       stage: stage,
       jobId: getRandom(jobIds),
-      // Ensure timeline and notes arrays always exist
       timeline: [{ stage: stage, date: faker.date.past().toISOString() }],
       notes: [], 
     });
@@ -52,10 +48,7 @@ const seedCandidates = async (createdJobs) => {
   console.log(`${CANDIDATE_COUNT} candidates seeded.`);
 };
 
-
-// --- 3. Seed Assessments (with English Questions) ---
 const generateQuestion = (type) => {
-  // NEW: Sample English questions
   const sampleQuestions = [
     "How would you rate your experience with React?",
     "Describe a challenging project you've worked on.",
@@ -68,14 +61,13 @@ const generateQuestion = (type) => {
 
   const question = {
     id: nanoid(),
-    text: getRandom(sampleQuestions), // Use a random English question
+    text: getRandom(sampleQuestions),
     type: type,
     options: [],
     validation: { required: faker.datatype.boolean() },
     conditional: { dependsOn: null, showIfValue: '' },
   };
   
-  // NEW: Sample English options
   if (type === 'single-choice' || type === 'multi-choice') {
     question.options = ['Beginner', 'Intermediate', 'Advanced', 'Expert'];
   }
@@ -96,15 +88,15 @@ const seedAssessments = async (createdJobs) => {
 
   for (let i = 0; i < ASSESSMENT_COUNT; i++) {
     const sections = [];
-    for (let s = 0; s < 2; s++) { // 2 sections per assessment
+    for (let s = 0; s < 2; s++) {
       const questions = [];
-      for (let q = 0; q < 6; q++) { // 6 questions per section (total 12)
+      for (let q = 0; q < 6; q++) {
         const qType = getRandom(['short-text', 'long-text', 'single-choice', 'multi-choice', 'numeric']);
         questions.push(generateQuestion(qType));
       }
       sections.push({
         id: nanoid(),
-        title: s === 0 ? 'Technical Skills' : 'Behavioral Questions', // English section titles
+        title: s === 0 ? 'Technical Skills' : 'Behavioral Questions',
         questions: questions,
       });
     }
@@ -124,7 +116,6 @@ const seedAssessments = async (createdJobs) => {
   console.log(`${ASSESSMENT_COUNT} assessments seeded.`);
 };
 
-// --- Main Seeder Function ---
 export const runSeed = async () => {
   try {
     const jobCount = await db.jobs.count();

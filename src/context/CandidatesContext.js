@@ -4,7 +4,6 @@ import AddNoteModal from '../components/AddNoteModal';
 
 export const CandidatesContext = createContext();
 
-// Reducer to manage all candidate-related state changes
 const candidatesReducer = (state, action) => {
   switch (action.type) {
     case 'SET_LOADING':
@@ -62,7 +61,6 @@ export const CandidatesProvider = ({ children }) => {
       ...(noteText.trim() && { note: noteText.trim() })
     };
 
-    // Use modify instead of db.core.util.modify
     await db.candidates.where({ id }).modify(candidate => {
       candidate.stage = newStage;
       if (!candidate.timeline) candidate.timeline = [];
@@ -86,13 +84,12 @@ export const CandidatesProvider = ({ children }) => {
     };
 
     try {
-      // Update the note in Dexie DB
+
       await db.candidates.where({ id: candidateId }).modify(candidate => {
         if (!candidate.notes) candidate.notes = [];
         candidate.notes.push(newNote);
       });
-      
-      // Optimistically update the UI
+
       dispatch({ type: 'ADD_NOTE_SUCCESS', payload: { candidateId, note: newNote } });
     } catch (error) {
       dispatch({ type: 'SET_ERROR', payload: 'Failed to add note.' });

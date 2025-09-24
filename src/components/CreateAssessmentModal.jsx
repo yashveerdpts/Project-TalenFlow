@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../dexieDB';
-import './CreateAssessmentModal.css'; // New CSS file
+import './CreateAssessmentModal.css';
 
 const CreateAssessmentModal = ({ isOpen, onClose, onSelectJob }) => {
   const [selectedJobId, setSelectedJobId] = useState('');
 
-  // Fetch all jobs to populate the dropdown
   const jobs = useLiveQuery(() => db.jobs.toArray(), []);
 
   if (!isOpen) {
@@ -14,7 +13,7 @@ const CreateAssessmentModal = ({ isOpen, onClose, onSelectJob }) => {
   }
 
   const handleProceed = () => {
-    onSelectJob(selectedJobId || null); // Pass null if no job is selected
+    onSelectJob(selectedJobId || null);
     onClose();
   };
 

@@ -1,4 +1,3 @@
-//src/dexieDB.js
 import Dexie from "dexie";
 
 const db = new Dexie("TalentFlowDB");

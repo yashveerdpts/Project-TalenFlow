@@ -1,4 +1,3 @@
-// src/api/handler.js
 import { setupWorker } from "msw/browser";
 import { http, HttpResponse } from "msw";
 import { faker } from "@faker-js/faker";

@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { useTheme } from '../context/ThemeContext'; // Import the new hook
+import { useTheme } from '../context/ThemeContext';
 import { useAuth } from '../context/AuthContext'; 
 import { RxDashboard } from "react-icons/rx";
 import './Navbar.css';
@@ -25,7 +25,6 @@ const AssessmentIcon = () => (
   </svg>
 );
 
-// A simple component for the theme icon
 const ThemeIcon = ({ isDarkMode }) => (
   <span style={{ fontSize: '24px', verticalAlign: 'middle', cursor: 'pointer' }}>
     {isDarkMode ? '🌙' : '☀️'}
@@ -33,7 +32,7 @@ const ThemeIcon = ({ isDarkMode }) => (
 );
 
 const Navbar = () => {
-  const { theme, toggleTheme } = useTheme(); // Use the theme context
+  const { theme, toggleTheme } = useTheme();
   const { logout } = useAuth();
 
   return (
@@ -48,7 +47,7 @@ const Navbar = () => {
         <NavLink to="/assessments"><AssessmentIcon/> <span>ASSESSMENTS</span></NavLink> 
       </div>
       <div className="navbar-actions">
-        {/* Add the theme toggle button */}
+        
         <button onClick={logout} className="btn btn-secondary">Logout</button>
         <button onClick={toggleTheme} className="theme-toggle-btn">
           <ThemeIcon isDarkMode={theme === 'dark'} />

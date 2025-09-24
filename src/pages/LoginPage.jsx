@@ -13,7 +13,7 @@ const LoginPage = () => {
 
   useEffect(() => {
     if (user) {
-      navigate("/"); // redirect after login or refresh
+      navigate("/");
     }
   }, [user, navigate]);
 

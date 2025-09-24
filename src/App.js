@@ -1,15 +1,12 @@
-// src/App.jsx
 import React, { useEffect } from "react";
 import { runSeed } from "./seedDB";
 import { BrowserRouter as Router, Routes, Route, Outlet } from "react-router-dom";
 
-// Context Providers
 import { ThemeProvider } from "./context/ThemeContext";
 import { JobsProvider } from "./context/JobsContext";
 import { CandidatesProvider } from "./context/CandidatesContext";
 import { AuthProvider } from "./context/AuthContext";
 
-// Components and Pages
 import Navbar from "./components/Navbar";
 import DashboardPage from "./pages/DashboardPage";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -24,7 +21,6 @@ import LoginPage from "./pages/LoginPage";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 
-// Layout wrapper with Navbar
 const Layout = () => (
   <>
     <Navbar />
@@ -46,15 +42,13 @@ function App() {
           <JobsProvider>
             <CandidatesProvider>
               <Routes>
-                {/* Public */}
                 <Route path="/login" element={<LoginPage />} />
 
-                {/* Protected */}
                 <Route element={<ProtectedRoute />}>
-                  {/* Dashboard without Navbar */}
+                
                   <Route path="/" element={<DashboardPage />} />
 
-                  {/* Routes with Navbar */}
+                 
                   <Route element={<Layout />}>
                     <Route path="/jobs" element={<JobsPage />} />
                     <Route path="/jobs/:jobId" element={<JobDetailsPage />} />

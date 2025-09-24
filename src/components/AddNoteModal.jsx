@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './AddNoteModal.css'; // New CSS file
+import './AddNoteModal.css';
 
 const AddNoteModal = ({ isOpen, onClose, onSave, candidateName, newStage }) => {
   const [note, setNote] = useState('');

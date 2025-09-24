@@ -1,4 +1,3 @@
-// src/context/AuthContext.jsx
 import React, { createContext, useContext, useState, useEffect } from "react";
 
 const AuthContext = createContext();
@@ -11,7 +10,7 @@ export const AuthProvider = ({ children }) => {
   });
 
   const login = async (email, password) => {
-    // Demo login (replace with API call later)
+  
     if (email === "admin@talentflow.com" && password === "123456789") {
       const loggedUser = { email };
       setUser(loggedUser);

@@ -1,5 +1,5 @@
 import React, { createContext, useReducer, useContext, useEffect } from "react";
-import { db } from "../dexieDB"; // Make sure your Dexie DB is exported correctly
+import { db } from "../dexieDB";
 
 const JobsStateContext = createContext();
 const JobsDispatchContext = createContext();
@@ -13,7 +13,6 @@ const initialState = {
   filters: { search: "", status: "" ,tags: "" },
 };
 
-// --- REDUCER ---
 function jobsReducer(state, action) {
   switch (action.type) {
     case "SET_LOADING":
@@ -33,7 +32,6 @@ function jobsReducer(state, action) {
         meta: { ...state.meta, total: state.meta.total + 1 }
       };
 
-    // THIS CASE IS NEEDED FOR THE MODAL TO WORK
     case "UPDATE_JOB":
       return {
         ...state,
@@ -63,7 +61,6 @@ function jobsReducer(state, action) {
   }
 }
 
-// --- PROVIDER ---
 export function JobsProvider({ children }) {
   const [state, dispatch] = useReducer(jobsReducer, initialState);
   return (
@@ -75,11 +72,8 @@ export function JobsProvider({ children }) {
   );
 }
 
-// --- HOOKS ---
 export const useJobsState = () => useContext(JobsStateContext);
 export const useJobsDispatch = () => useContext(JobsDispatchContext);
-
-// --- JOB ACTIONS ---
 
 export async function fetchJobs(dispatch, { filters, page }) {
   dispatch({ type: "SET_LOADING", payload: true });
@@ -97,7 +91,6 @@ export async function fetchJobs(dispatch, { filters, page }) {
    if (filters.tags) {
     const tagLower = filters.tags.toLowerCase();
     collection = collection.filter(job => 
-      // Check if the job's tags array contains the searched tag
       Array.isArray(job.tags) && job.tags.some(tag => tag.toLowerCase().includes(tagLower))
     );
   }
@@ -141,7 +134,6 @@ export async function createJob(dispatch, jobData) {
   }
 }
 
-// THIS IS THE MISSING FUNCTION THAT NEEDS TO BE EXPORTED
 export async function updateJob(dispatch, id, updates) {
   try {
     await db.jobs.update(id, updates);
@@ -157,7 +149,6 @@ export async function updateJob(dispatch, id, updates) {
 }
 
 export async function updateJobStatus(dispatch, job, newStatus) {
-  // This function now correctly uses the general updateJob function
   return updateJob(dispatch, job.id, { status: newStatus });
 }
 

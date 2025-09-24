@@ -1,7 +1,3 @@
-/* --- ================================== --- */
-/* ---         Login Page Styles          --- */
-/* --- ================================== --- */
-
 .login-page-container {
   display: flex;
   align-items: center;
@@ -11,7 +7,6 @@
   background: var(--background-gradient);
 }
 
-/* --- Login Card --- */
 .login-card {
   width: 100%;
   max-width: 400px;
@@ -20,7 +15,7 @@
   border-radius: var(--border-radius);
   box-shadow: 0 10px 40px var(--shadow-heavy);
   border: 1px solid var(--border-color);
-  animation: popIn 0.5s ease-out; /* Add a subtle animation */
+  animation: popIn 0.5s ease-out;
 }
 
 .login-card h1 {
@@ -39,7 +34,6 @@
   font-size: 1.1rem;
 }
 
-/* --- Form Group & Elements --- */
 .form-group {
   margin-bottom: 1.5rem;
 }
@@ -70,7 +64,6 @@
   box-shadow: 0 0 0 3px rgba(106, 90, 249, 0.3);
 }
 
-/* --- Button Styling --- */
 .login-card .btn {
   width: 100%;
   padding-top: 1rem;
@@ -79,7 +72,6 @@
   margin-top: 1rem;
 }
 
-/* --- Error Message --- */
 .error-message {
   color: #e53e3e;
   background-color: rgba(239, 68, 68, 0.1);
@@ -90,7 +82,6 @@
   margin-top: 1.5rem;
 }
 
-/* --- Simple Animation --- */
 @keyframes popIn {
   from {
     opacity: 0;

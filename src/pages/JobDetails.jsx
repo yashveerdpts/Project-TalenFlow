@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { db } from "../dexieDB";
-import "./JobDetailsPage.css"; // Import the new CSS file
+import "./JobDetailsPage.css";
 
 export default function JobDetails() {
   const { jobId } = useParams();
@@ -11,7 +11,6 @@ export default function JobDetails() {
   useEffect(() => {
     async function getJobDetails() {
       try {
-        // Dexie keys are numbers, so we parse the ID from the URL
         const id = parseInt(jobId, 10);
         if (isNaN(id)) {
           setJob(null);
@@ -38,7 +37,6 @@ export default function JobDetails() {
 
   return (
     <div className="job-details-page">
-      {/* --- Header Card --- */}
       <div className="job-details-card job-header">
         <h1>{job.title}</h1>
         <div className="job-meta-details"> 
@@ -48,7 +46,6 @@ export default function JobDetails() {
         </div>
       </div>
 
-      {/* --- Hiring Tools Card --- */}
       <div className="job-details-card hiring-tools-card">
         <h2>Hiring Tools</h2>
         <p>Manage assessments and other tools for this role.</p>

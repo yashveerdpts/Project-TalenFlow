@@ -1,10 +1,6 @@
-/* --- ================================== --- */
-/* ---        Dashboard Page Styles       --- */
-/* --- ================================== --- */
-
 .dashboard-layout {
   display: grid;
-  grid-template-columns: 250px 1fr; /* Sidebar width and main content */
+  grid-template-columns: 250px 1fr;
   height: 100vh;
   transition: grid-template-columns 0.3s ease;
 }
@@ -13,7 +9,6 @@
   grid-template-columns: 0 1fr;
 }
 
-/* --- Sidebar --- */
 .dashboard-sidebar {
   background-color: var(--surface-color);
   border-right: 1px solid var(--border-color);
@@ -52,7 +47,6 @@
   background-color: rgba(74, 85, 104, 0.5);
 }
 
-/* --- Main Content --- */
 .dashboard-main {
   padding: 2rem;
   background: var(--background-gradient);
@@ -79,7 +73,6 @@
   font-weight: 700;
 }
 
-/* --- Summary Cards --- */
 .summary-cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -109,7 +102,6 @@
   color: var(--primary-color);
 }
 
-/* --- Dashboard Columns --- */
 .dashboard-columns {
   display: grid;
   grid-template-columns: 1.5fr 1fr;
@@ -131,7 +123,6 @@
   border-bottom: 1px solid var(--border-color);
 }
 
-/* --- Recent Candidates & Active Jobs Lists --- */
 .recent-candidates-list, .active-jobs-list {
   list-style: none;
   padding: 0;
@@ -169,7 +160,6 @@
     grid-template-columns: 1fr;
   }
 } 
-
 
 .navbar-brand a {
   font-size: 1.5rem;

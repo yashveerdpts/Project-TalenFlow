@@ -3,14 +3,13 @@ import { useParams } from 'react-router-dom';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../dexieDB';
 import AssessmentForm from '../components/AssessmentForm';
-import QuestionEditor from '../components/QuestionEditor'; // The new editor component
+import QuestionEditor from '../components/QuestionEditor';
 import './AssessmentBuilderPage.css';
 import { nanoid } from 'nanoid';
 
-// --- Reducer for managing complex assessment state ---
 const assessmentReducer = (state, action) => {
   if (!state && action.type !== 'LOAD_ASSESSMENT') return state;
-  const newState = JSON.parse(JSON.stringify(state)); // Deep copy
+  const newState = JSON.parse(JSON.stringify(state));
 
   switch (action.type) {
     case 'LOAD_ASSESSMENT':
@@ -129,7 +128,7 @@ const AssessmentBuilderPage = () => {
         <h2>Live Preview</h2>
         <AssessmentForm
           assessmentStructure={assessmentState}
-          onResponseChange={setResponses} // Persist responses locally
+          onResponseChange={setResponses}
           responses={responses}
         />
       </div>

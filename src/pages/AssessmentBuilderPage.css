@@ -1,11 +1,7 @@
-/* --- ================================== --- */
-/* ---    Assessment Builder Page Styles  --- */
-/* --- ================================== --- */
-
 .builder-page {
   display: grid;
-  grid-template-columns: 1.5fr 1fr; /* Builder panel is wider */
-  height: calc(100vh - 65px); /* Full height minus navbar */
+  grid-template-columns: 1.5fr 1fr;
+  height: calc(100vh - 65px);
   font-family: 'Poppins', sans-serif;
   background-color: #f0f2f5;
 }
@@ -13,7 +9,6 @@
   background-color: #1a202c;
 }
 
-/* --- Builder Panel (Left) --- */
 .builder-panel {
   padding: 2rem;
   background-color: var(--surface-color);
@@ -64,7 +59,6 @@
   background-color: rgba(74, 85, 104, 0.2);
 }
 
-/* --- Question Editor Card --- */
 .question-editor {
   background-color: var(--surface-color);
   border: 1px solid var(--border-color);
@@ -111,7 +105,6 @@
 }
 .delete-btn:hover { background-color: #fecaca; }
 
-/* --- Options, Validation & Conditional Logic --- */
 .options-editor, .validation-rules, .conditional-logic {
   padding-top: 1rem;
   border-top: 1px solid var(--border-color);
@@ -155,7 +148,6 @@
   align-self: flex-start;
 }
 
-/* --- Preview Panel (Right) --- */
 .preview-panel {
   padding: 2rem;
   overflow-y: auto;
@@ -170,7 +162,6 @@
   margin-bottom: 2rem;
 }
 
-/* --- Preview Form Styles --- */
 .assessment-form-preview {
   background: var(--surface-color);
   border-radius: var(--border-radius);
@@ -239,7 +230,6 @@
   margin-top: 1rem;
 }
 
-/* --- Responsive Layout --- */
 @media (max-width: 900px) {
   .builder-page {
     grid-template-columns: 1fr;

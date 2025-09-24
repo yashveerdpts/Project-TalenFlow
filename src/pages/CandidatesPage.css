@@ -1,12 +1,8 @@
-/* --- ================================== --- */
-/* ---      Candidates Page Styles        --- */
-/* --- ================================== --- */
-
 .candidates-page {
   padding: 2rem;
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 65px); /* Full height minus navbar */
+  height: calc(100vh - 65px);
   box-sizing: border-box;
 }
 
@@ -18,7 +14,6 @@
   text-align: center;
 }
 
-/* --- Controls --- */
 .controls {
   display: flex;
   justify-content: center;
@@ -58,8 +53,6 @@
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%23a0aec0'%3E%3Cpath fill-rule='evenodd' d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z' clip-rule='evenodd' /%3E%3C/svg%3E");
 }
 
-
-/* --- List View --- */
 .list-container {
   flex-grow: 1;
   background: var(--surface-color);
@@ -103,7 +96,6 @@
   fill: var(--text-light);
 }
 
-/* --- Kanban View --- */
 .kanban-board {
   display: flex;
   gap: 1.5rem;
@@ -191,8 +183,6 @@
   fill: var(--text-light);
 }
 
-
-/* --- Shared Status Badges --- */
 .status-badge {
   padding: 0.3rem 0.8rem;
   border-radius: 999px;
@@ -206,7 +196,7 @@
 .status-badge.status-offer { background-color: rgba(22, 163, 74, 0.1); color: #15803d; }
 .status-badge.status-hired { background-color: rgba(22, 163, 74, 0.2); color: #15803d; font-weight: bold; }
 .status-badge.status-rejected { background-color: rgba(239, 68, 68, 0.1); color: #ef4444;}
-/* General message container for loading/error states */
+
 .message-container {
   text-align: center;
   padding: 4rem;
@@ -217,7 +207,7 @@
 
 .candidate-row {
   display: flex;
-  justify-content: space-between; /* This is the key change */
+  justify-content: space-between;
   align-items: center;
   padding: 0 1rem;
   border-bottom: 1px solid var(--border-color);
@@ -230,13 +220,11 @@
   text-decoration: none;
   color: var(--text-color);
   padding: 0.5rem 0;
-  
-  /* Allow the link to shrink but also take up space */
+
   flex-grow: 1;
-  min-width: 0; /* Important for flexbox to handle overflow correctly */
+  min-width: 0;
 }
 
-/* Also add this to ensure the badge does not shrink */
 .status-badge {
   flex-shrink: 0;
   margin-right: 4rem;

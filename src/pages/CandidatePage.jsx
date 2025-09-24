@@ -38,7 +38,7 @@ const CandidatesPage = () => {
     if (!destination || (destination.droppableId === source.droppableId)) {
       return;
     }
-    // Open the modal to ask for a note
+
     setNoteModalState({
       isOpen: true,
       candidateId: draggableId,

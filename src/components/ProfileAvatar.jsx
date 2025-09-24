@@ -1,7 +1,6 @@
 import React from 'react';
-import './ProfileAvatar.css'; // We will create this CSS file
+import './ProfileAvatar.css';
 
-// Helper function to get initials from a name
 const getInitials = (name = '') => {
   const allNames = name.trim().split(' ');
   const initials = allNames.reduce((acc, curr, index) => {
@@ -13,7 +12,6 @@ const getInitials = (name = '') => {
   return initials;
 };
 
-// Helper function to generate a color based on the name for consistent avatar colors
 const generateColor = (name = '') => {
   let hash = 0;
   for (let i = 0; i < name.length; i++) {

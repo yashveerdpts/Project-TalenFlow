@@ -1,13 +1,12 @@
 import React, { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { useTheme } from '../context/ThemeContext'; // Import the new hook
+import { useTheme } from '../context/ThemeContext';
 import { useAuth } from '../context/AuthContext'; 
 import { db } from '../dexieDB';
 import ProfileAvatar from '../components/ProfileAvatar';
-import './DashboardPage.css'; // The new CSS for the dashboard
+import './DashboardPage.css';
 
-// --- Icon Components ---
 const MenuIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
     <path fillRule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
@@ -41,16 +40,14 @@ const ThemeIcon = ({ isDarkMode }) => (
 );
 
 const DashboardPage = () => { 
-  const { theme, toggleTheme } = useTheme(); // Use the theme context
+  const { theme, toggleTheme } = useTheme();
     const { logout } = useAuth();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
-  // --- Data Fetching ---
   const jobs = useLiveQuery(() => db.jobs.toArray(), []);
   const candidates = useLiveQuery(() => db.candidates.toArray(), []);
   const assessments = useLiveQuery(() => db.assessments.toArray(), []);
 
-  // --- Memoized Statistics ---
   const stats = useMemo(() => {
     if (!jobs || !candidates) return { totalJobs: 0, activeJobs: 0, totalCandidates: 0, hired: 0 };
     return {
@@ -63,7 +60,7 @@ const DashboardPage = () => {
 
   const recentCandidates = useMemo(() => {
     if (!candidates) return [];
-    // Assuming candidates have an ID that increments, otherwise use a timestamp.
+
     return [...candidates].sort((a, b) => b.id - a.id).slice(0, 5);
   }, [candidates]);
   
@@ -79,7 +76,7 @@ const DashboardPage = () => {
 
   return (
     <div className={`dashboard-layout ${isSidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
-      {/* --- Collapsible Sidebar --- */}
+
       <aside className="dashboard-sidebar">
         
         <nav className="sidebar-nav"> 
@@ -92,12 +89,9 @@ const DashboardPage = () => {
 
         <button onClick={logout} className="btn btn-secondary" style={{marginTop: '400px'}}>Logout</button>
 
-
-          {/* Add more links here */}
         </nav>
       </aside>
 
-      {/* --- Main Content --- */}
       <main className="dashboard-main">
         <header className="dashboard-header">
           <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="sidebar-toggle">
@@ -106,7 +100,6 @@ const DashboardPage = () => {
           <h1>Dashboard</h1>
         </header>
 
-        {/* --- Summary Cards --- */}
         <section className="summary-cards">
           <div className="summary-card">
             <h4>Total Jobs</h4>
@@ -126,7 +119,6 @@ const DashboardPage = () => {
           </div>
         </section>
 
-        {/* --- Two-Column Layout for Lists --- */}
         <section className="dashboard-columns">
           <div className="dashboard-list-card">
             <h3>Recent Candidates</h3>

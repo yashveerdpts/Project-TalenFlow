@@ -1,7 +1,5 @@
-/* Import your font */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
-/* --- Light Mode Variables (Default) --- */
 :root {
   --primary-color: #6a5af9;
   --secondary-color: #f7aef8;
@@ -15,8 +13,6 @@
   --border-radius: 12px;
 }
 
-/* --- Dark Mode Overrides --- */
-/* These variables are used when the body has the .dark-theme class */
 body.dark-theme {
   --primary-color: #8b7ffc;
   --background-gradient: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
@@ -28,7 +24,6 @@ body.dark-theme {
   --shadow-heavy: rgba(0, 0, 0, 0.4);
 }
 
-/* Base body styles */
 body {
   margin: 0;
   font-family: 'Poppins', sans-serif;

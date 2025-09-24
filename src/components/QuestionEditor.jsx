@@ -51,7 +51,6 @@ const QuestionEditor = ({ question, sectionIndex, questionIndex, allQuestions, d
         </button>
       </div>
 
-      {/* --- Options for Choice Questions --- */}
       {(question.type === 'single-choice' || question.type === 'multi-choice') && (
         <div className="options-editor">
           {question.options.map((opt, i) => (
@@ -64,7 +63,6 @@ const QuestionEditor = ({ question, sectionIndex, questionIndex, allQuestions, d
         </div>
       )}
 
-      {/* --- Validation Rules --- */}
       <div className="validation-rules">
         <h4>Validation</h4>
         <label><input type="checkbox" checked={question.validation.required} onChange={e => handleValidationChange('required', e.target.checked)} /> Required</label>
@@ -78,8 +76,7 @@ const QuestionEditor = ({ question, sectionIndex, questionIndex, allQuestions, d
           </div>
         )}
       </div>
-      
-      {/* --- Conditional Logic --- */}
+
       <div className="conditional-logic">
         <h4>Conditional Logic</h4>
         <select value={question.conditional.dependsOn || ''} onChange={e => handleConditionalChange('dependsOn', e.target.value || null)}>

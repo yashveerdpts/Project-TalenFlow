@@ -1,5 +1,3 @@
-// src/api/server.js
-
 import { createServer, Model, Factory, Response } from "miragejs";
 import { faker } from '@faker-js/faker';
 
@@ -9,7 +7,7 @@ export function makeServer({ environment = "development" } = {}) {
 
     models: {
       job: Model,
-      candidate: Model, // Add candidate model
+      candidate: Model,
     },
 
     factories: {
@@ -30,7 +28,7 @@ export function makeServer({ environment = "development" } = {}) {
           return ["React", "JavaScript"];
         }
       }),
-      // Add candidate factory
+      // Added candidate factory
       candidate: Factory.extend({
         name() {
           return faker.person.fullName();
@@ -50,10 +48,10 @@ export function makeServer({ environment = "development" } = {}) {
         }
       }),
     },
-
+// Seeded 1000 candidates
     seeds(server) {
       server.createList("job", 15);
-      server.createList("candidate", 1000); // Seed 1000 candidates
+      server.createList("candidate", 1000);
     },
 
     routes() {
@@ -90,7 +88,7 @@ export function makeServer({ environment = "development" } = {}) {
         return job;
       });
 
-      // ** New Candidate Routes **
+      //New Candidate Routes
       this.get("/candidates", (schema) => {
         return schema.candidates.all();
       });
@@ -113,7 +111,7 @@ export function makeServer({ environment = "development" } = {}) {
           return new Response(404, {}, { error: "Candidate not found" });
         }
 
-        // Add to timeline if stage is changing
+        //timeline add, if stage is changing
         if (attrs.stage && attrs.stage !== candidate.stage) {
             const newTimelineEntry = { stage: attrs.stage, date: new Date() };
             attrs.timeline = [...candidate.timeline, newTimelineEntry];

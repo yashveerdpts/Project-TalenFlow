@@ -1,33 +1,27 @@
 import React, { useState, useEffect } from "react";
 import { useJobsDispatch, createJob, updateJob } from "../context/JobsContext";
-import "./JobFormModal.css"; // We will create this new CSS file
+import "./JobFormModal.css";
 
-// A helper function to generate slugs
 const generateSlug = (text) => 
   text.trim().toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]+/g, '');
 
 function JobFormModal({ isOpen, onClose, jobToEdit }) {
   const dispatch = useJobsDispatch();
 
-  // Use a single state object for the form data
   const [formData, setFormData] = useState({ title: "", slug: "", tags: "" });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   
   const isEditMode = Boolean(jobToEdit);
 
-  // Effect to auto-generate slug from title, but only if slug is not manually edited++
   useEffect(() => {
-    // Check if the current slug was derived from the current title
     const isSlugAuto = formData.slug === generateSlug(formData.title);
     if (!isSlugAuto && formData.slug !== '') {
-      // If the slug was manually changed, don't auto-update it
       return;
     }
     setFormData(prev => ({ ...prev, slug: generateSlug(prev.title) }));
   }, [formData.title]);
 
-  // Effect to populate form when entering "edit" mode
   useEffect(() => {
     if (isOpen) {
       if (isEditMode) {
@@ -37,10 +31,9 @@ function JobFormModal({ isOpen, onClose, jobToEdit }) {
           tags: Array.isArray(jobToEdit.tags) ? jobToEdit.tags.join(", ") : "",
         });
       } else {
-        // Reset form for "create" mode
         setFormData({ title: "", slug: "", tags: "" });
       }
-      setErrors({}); // Clear errors when modal opens
+      setErrors({});
     }
   }, [isOpen, jobToEdit, isEditMode]);
 
@@ -54,7 +47,6 @@ function JobFormModal({ isOpen, onClose, jobToEdit }) {
     setIsSubmitting(true);
     setErrors({});
 
-    // Prepare data for submission (convert tags string to array)
     const jobData = {
       ...formData,
       tags: formData.tags.split(',').map(tag => tag.trim()).filter(Boolean),

@@ -5,8 +5,6 @@ import { useJobsState, useJobsDispatch, updateJobStatus, fetchJobs, reorderJobs 
 import JobFormModal from "../components/JobFormModal";
 import "./JobsPage.css";
 
-// REMOVED: The ThemeIcon component is no longer needed.
-
 function JobsPage() {
   const navigate = useNavigate();
   const state = useJobsState();
@@ -15,7 +13,6 @@ function JobsPage() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [jobToEdit, setJobToEdit] = useState(null);
-  // REMOVED: All theme state and functions are gone.
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -24,20 +21,19 @@ function JobsPage() {
     return () => clearTimeout(handler);
   }, [dispatch, filters, meta.page]);
 
-  // --- NEW: Functions to handle opening the modal in create or edit mode ---
   const handleOpenCreateModal = () => {
-    setJobToEdit(null); // Ensure we're in create mode
+    setJobToEdit(null);
     setIsModalOpen(true);
   };
 
   const handleOpenEditModal = (job) => {
-    setJobToEdit(job); // Set the job to edit
+    setJobToEdit(job);
     setIsModalOpen(true);
   };
   
   const handleCloseModal = () => {
     setIsModalOpen(false);
-    setJobToEdit(null); // Clean up after close
+    setJobToEdit(null);
   };
 
   const onDragEnd = (result) => {
@@ -46,12 +42,10 @@ function JobsPage() {
   };
 
   return (
-    // The theme class has been removed from this div
     <div className="jobs-page-container">
       <div className="jobs-content">
         <header className="jobs-header">
           <h1>Jobs</h1>
-          {/* REMOVED: The theme toggle button is gone. */}
         </header>
 
         <div className="jobs-filters">
